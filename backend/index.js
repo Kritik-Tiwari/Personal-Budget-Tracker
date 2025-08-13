@@ -22,4 +22,4 @@ app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`)
 })
 
-// Hello my name is kritik
+//This is IIT Project
