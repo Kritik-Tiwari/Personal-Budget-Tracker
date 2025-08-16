@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "nodemon": "^3.1.10"
+    "mongodb": "^6.18.0"
   }
 }
