@@ -13,7 +13,7 @@ const deleteExpenses = (req,res) => {
 }
 
 module.exports = {
-    addExpenses,
+    addExpense,
     fetchExpenses,
     deleteExpenses
-}
+};

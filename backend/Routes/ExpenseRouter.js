@@ -1,12 +1,11 @@
-const { fetchExpenses, addExpenses } = require('../Controllers/ExpenseController');
+// Routes/ExpenseRouter.js
+const express = require('express');
+const router = express.Router();
+const { addExpense, fetchExpenses, deleteExpenses } = require('../Controllers/ExpenseController');
 
-const router = require('express').Router();
-
-//fetch all the expenses of user based on user_id
-router.get('/', fetchExpenses);
-//add Expenses
-router.post('/', addExpenses);
-//delete Expenses
-router.delete('/', deleteExpenses);
+// ✅ route names match
+router.post('/add', addExpense);
+router.get('/', fetchExpenses); 
+router.delete('/delete/:id', deleteExpenses);
 
 module.exports = router;
