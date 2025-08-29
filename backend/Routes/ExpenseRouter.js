@@ -1,11 +1,9 @@
-// Routes/ExpenseRouter.js
-const express = require('express');
-const router = express.Router();
-const { addExpense, fetchExpenses, deleteExpenses } = require('../Controllers/ExpenseController');
+const router = require('express').Router();
+const { fetchExpenses, addExpenses, deleteExpenses } = require('../Controllers/ExpenseController');
 
-// handle POST directly at /expenses
-router.post('/', addExpense); 
-router.get('/', fetchExpenses); 
-router.delete('/:id', deleteExpenses);
+
+router.get('/', fetchExpenses);
+router.post('/', addExpenses);
+router.delete('/:expenseId', deleteExpenses);
 
 module.exports = router;
