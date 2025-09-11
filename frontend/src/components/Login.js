@@ -23,8 +23,13 @@ export default function Login() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Login failed");
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("loggedInUser", data.user?.name || form.email);
+      // ✅ Save tokens correctly
+      localStorage.setItem("token", data.accessToken);   // use accessToken
+      localStorage.setItem("refreshToken", data.refreshToken);
+
+      // ✅ Save logged in user correctly
+      localStorage.setItem("loggedInUser", data.name || form.email);
+
       handleSuccess("Login successful!");
       navigate("/dashboard");
     } catch (err) {

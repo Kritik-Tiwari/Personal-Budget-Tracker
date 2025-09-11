@@ -9,16 +9,70 @@ export const handleError = (err) => {
   console.error("ERROR:", err);
 };
 
-// ✅ fetch wrapper that always sends Bearer token
-export async function fetchWithAuth(url, options = {}) {
-  const token = localStorage.getItem("token") || "";
-  const headers = options.headers ? { ...options.headers } : {};
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-  const opts = { ...options, headers };
-  try {
-    const res = await fetch(url, opts);
-    return res;
-  } catch (err) {
-    throw err;
+// helper: clear storage + redirect to login
+function logoutAndRedirect() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("loggedInUser");
+  window.location.href = "/login"; // force redirect
+}
+
+// helper: refresh access token
+async function refreshAccessToken() {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) {
+    logoutAndRedirect();
+    return null;
   }
+
+  try {
+    const res = await fetch(`${APIUrl}/auth/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    const data = await res.json();
+    if (res.ok && data.accessToken) {
+      // ✅ save new tokens
+      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      return data.accessToken;
+    } else {
+      console.error("Failed to refresh token:", data.message);
+      logoutAndRedirect();
+      return null;
+    }
+  } catch (err) {
+    console.error("Refresh token request failed:", err);
+    logoutAndRedirect();
+    return null;
+  }
+}
+
+// ✅ fetch wrapper with auto refresh + retry + logout fallback
+export async function fetchWithAuth(url, options = {}) {
+  let token = localStorage.getItem("token") || "";
+  let headers = options.headers ? { ...options.headers } : {};
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  if (!headers["Content-Type"] && options.body) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  let res = await fetch(url, { ...options, headers });
+
+  // If token expired → try refresh once
+  if (res.status === 403 || res.status === 401) {
+    const newToken = await refreshAccessToken();
+    if (newToken) {
+      headers["Authorization"] = `Bearer ${newToken}`;
+      res = await fetch(url, { ...options, headers });
+    }
+  }
+
+  return res;
 }
