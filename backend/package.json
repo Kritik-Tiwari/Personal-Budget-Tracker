@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Personal Budget Tracker Backend",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js" 
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",

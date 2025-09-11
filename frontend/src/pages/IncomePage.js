@@ -39,12 +39,9 @@ export default function IncomePage() {
           <ExpenseTrackerForm
             addExpenses={async (d) => {
               d.amount = Math.abs(Number(d.amount || 0));
-              await fetch(`${APIUrl}/expenses`, {
+              await fetchWithAuth(`${APIUrl}/expenses`, {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: localStorage.getItem("token"),
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(d),
               });
               fetchExpenses();
