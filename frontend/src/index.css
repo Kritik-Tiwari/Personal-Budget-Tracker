@@ -1,72 +1,123 @@
+/* src/index.css - polished UI similar to video 0:00-7:30 */
 
+/* reset */
 *,
 ::before,
-::after{
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+::after { box-sizing: border-box; margin:0; padding:0; }
+
+html,body,#root { height:100%; }
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #f4f6fb;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.35;
 }
 
-label{
-  font-size: 20px;
+/* container centered */
+.app-container {
+  max-width: 1100px;
+  margin: 36px auto;
+  padding: 20px;
 }
 
-html,
-body{
-  height: 100%;
-  width: 100%;
+/* Header */
+.header {
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:20px;
 }
+.brand {
+  font-size:28px;
+  font-weight:800;
+  letter-spacing: -0.5px;
+}
+.brand .accent { color:#7c3aed; }
 
-body{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+/* header controls */
+.header-controls { display:flex; gap:10px; align-items:center; }
 
-.container{
-  background-color: #FFF;
-  padding: 32px 48px;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
-}
+/* buttons */
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:8px; padding:8px 12px; border:0; cursor:pointer; font-weight:600; }
+.btn-primary { background:#7c3aed; color:#fff; box-shadow:0 8px 30px rgba(124,58,237,0.12); }
+.btn-ghost { background:#fff; border:1px solid #e6e9f0; color:#0f172a; }
+.btn-danger { background:#ef4444; color:#fff; }
 
-.container > h1{
-  margin-bottom: 20px;
-}
+/* layout */
+.layout { display:grid; grid-template-columns: 1fr 360px; gap:18px; align-items:start; }
+@media(max-width:1000px){ .layout { grid-template-columns: 1fr; } }
 
-.container > form{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.container div{
-  display: flex;
-  flex-direction: column;
-}
+/* left column stacked blocks */
+.card { background:#fff; border-radius:12px; padding:18px; box-shadow:0 10px 30px rgba(2,6,23,0.06); }
 
-.container input{
-  width: 100%;
-  font-size: 20px;
-  padding: 10px;
-  border: none;
-  outline: none;
-  border-bottom: 1px solid black;
-}
+/* info row */
+.info-row { display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-bottom:16px; }
+@media(max-width:720px){ .info-row { grid-template-columns: 1fr; } }
+.info-box { display:flex; justify-content:space-between; align-items:center; padding:14px; border-radius:10px; }
+.info-left { display:flex; flex-direction:column; gap:6px; }
+.info-title { font-size:13px; color:#374151; }
+.info-value { font-weight:800; font-size:20px; }
+.info-indigo { background:#eef2ff; border:1px solid #e0e7ff; color:#3730a3; }
+.info-green  { background:#ecfdf5; border:1px solid #bbf7d0; color:#065f46; }
+.info-red    { background:#fff1f2; border:1px solid #fecaca; color:#9f1239; }
 
-.container input::placeholder{
-  font-size: 12px;
-  font-style: italic;
-}
+/* transactions header */
+.tx-header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+.tx-title { font-size:18px; font-weight:700; }
 
-button{
-  background-color: purple;
-  border: none;
-  font-size: 20px;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
-  cursor: pointer;
-  margin: 10px 0;
+/* filter row */
+.filter-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+.input, .select {
+  padding:8px 10px; border-radius:8px; border:1px solid #e6e9f0; min-height:36px; background:#fff;
+}
+.search-wrap { position:relative; display:inline-block; }
+.search-wrap input { padding-left:34px; }
+.search-wrap svg { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#9ca3af; }
+
+/* export buttons small */
+.export-group { display:flex; gap:8px; }
+
+/* table */
+.table-wrap { overflow-x:auto; }
+.table { width:100%; border-collapse:collapse; min-width:720px; }
+.table thead th { text-align:left; padding:12px; background:#f3f4f8; color:#374151; font-weight:700; font-size:13px; position:sticky; top:0; }
+.table tbody td { padding:12px; border-bottom:1px solid #f0f3fb; vertical-align:middle; font-size:14px; }
+.row-actions button { border:0; padding:8px; border-radius:8px; cursor:pointer; }
+.edit-btn { background:#eef2ff; color:#3730a3; margin-right:6px; }
+.delete-btn { background:#fff1f2; color:#9f1239; }
+
+/* amount style */
+.amount-pos { color:#15803d; font-weight:700; }
+.amount-neg { color:#dc2626; font-weight:700; }
+
+/* pagination */
+.pagination { display:flex; gap:8px; justify-content:center; margin-top:12px; }
+.page-btn { padding:8px 10px; background:#fff; border-radius:8px; border:1px solid #eef2f7; cursor:pointer; }
+
+/* charts area */
+.charts-grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:14px; }
+.chart-card { background:#fff; border-radius:10px; padding:12px; height:220px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 8px 20px rgba(2,6,23,0.04); }
+
+/* right column - add transaction */
+.right-col { position:sticky; top:20px; align-self:start; }
+.form-row { display:flex; gap:8px; align-items:center; margin-top:10px; }
+.form-row .input, .form-row select { width:100%; }
+.add-btn { margin-top:12px; }
+
+/* modal (edit) */
+.modal-backdrop { position:fixed; inset:0; background:rgba(2,6,23,0.5); display:flex; align-items:center; justify-content:center; z-index:40; }
+.modal { width:100%; max-width:480px; background:#fff; padding:18px; border-radius:12px; box-shadow:0 12px 30px rgba(2,6,23,0.12); }
+
+/* small text */
+.small { font-size:13px; color:#6b7280; }
+
+/* login container (preserve earlier style if used) */
+.login-container { max-width:420px; margin:36px auto; background:#fff; padding:28px; border-radius:10px; box-shadow:0 8px 30px rgba(2,6,23,0.06); }
+
+@media(max-width:720px) {
+  .charts-grid { grid-template-columns:1fr; }
+  .table { min-width:600px; }
 }

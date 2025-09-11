@@ -1,32 +1,28 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Home from './pages/Home';
-import { useState, useEffect } from 'react';
+// src/App.js
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Dashboard from "./pages/Dashboard";
+import ExpensePage from "./pages/ExpensePage";
+import IncomePage from "./pages/IncomePage";
+import Layout from "./components/Layout";  // ✅ import Layout
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Check token on first render
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);  // true if token exists
-  }, []);
-
-  const PrivateRoute = ({ element }) => {
-    return isAuthenticated ? element : <Navigate to="/login" />
-  }
-
   return (
-    <div className="App">
-      <Routes>
-        <Route path='/' element={<Navigate to="/login" />} />
-        <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/home' element={<PrivateRoute element={<Home />} />} />
-      </Routes>
-    </div>
+    <Routes>
+      {/* Public routes */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+
+      {/* Protected routes with Sidebar */}
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/expenses" element={<ExpensePage />} />
+        <Route path="/income" element={<IncomePage />} />
+      </Route>
+    </Routes>
   );
 }
 

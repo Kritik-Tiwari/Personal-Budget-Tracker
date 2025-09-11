@@ -1,0 +1,130 @@
+.auth-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+/* left form */
+.auth-left {
+  flex: 1;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.auth-box h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #111827;
+}
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+.form-group label {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+.form-group input {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #7c3aed, #9333ea);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 12px;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.footer-text {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #6b7280;
+}
+.footer-text .link {
+  color: #7c3aed;
+  font-weight: 500;
+}
+
+/* Right section styling */
+.auth-right {
+  flex: 1;
+  background: linear-gradient(135deg, #6f3dd7, #9b5de5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.auth-graphic {
+  text-align: center;
+  max-width: 300px;
+}
+
+.auth-graphic h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.auth-graphic p {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+/* Fake chart bars */
+.fake-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  height: 120px;
+}
+
+.fake-chart .bar {
+  width: 20px;
+  background: white;
+  border-radius: 6px;
+  animation: grow 1.5s ease-in-out infinite alternate;
+}
+
+.fake-chart .bar:nth-child(1) { animation-delay: 0s; height: 40%; background: #ffc658; }
+.fake-chart .bar:nth-child(2) { animation-delay: 0.2s; height: 70%; background: #82ca9d; }
+.fake-chart .bar:nth-child(3) { animation-delay: 0.4s; height: 55%; background: #8884d8; }
+.fake-chart .bar:nth-child(4) { animation-delay: 0.6s; height: 90%; background: #ff7f7f; }
+
+@keyframes grow {
+  from { transform: scaleY(0.7); }
+  to { transform: scaleY(1); }
+}
+
+
+
