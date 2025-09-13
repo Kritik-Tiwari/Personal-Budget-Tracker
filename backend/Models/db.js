@@ -1,21 +1,22 @@
-const mongoose = require('mongoose');
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-// Read the URI
 const mongoURI = process.env.MONGO_CONN;
 
 if (!mongoURI) {
-    console.error("❌ ERROR: MONGO_CONN is missing in .env file.");
-    process.exit(1); // Stop the process
+  console.error("❌ ERROR: MONGO_CONN is missing in environment variables.");
+  process.exit(1);
 }
 
 (async () => {
-    try {
-        await mongoose.connect(mongoURI);
-        console.log("✅ MongoDB Connected...");
-    } catch (err) {
-        console.error("❌ MongoDB Connection Error:", err.message);
-        process.exit(1);
-    }
+  try {
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ MongoDB Connected...");
+  } catch (err) {
+    console.error("❌ MongoDB Connection Error:", err.message);
+    process.exit(1);
+  }
 })();

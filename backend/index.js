@@ -6,19 +6,26 @@ require("./Models/db"); // MongoDB connection file
 const AuthRouter = require("./Routes/AuthRouter");
 const ProductRouter = require("./Routes/ProductRouter");
 const ExpenseRouter = require("./Routes/ExpenseRouter");
-const BudgetRouter = require("./Routes/BudgetRouter");   // ✅ new
-const GroupRouter = require("./Routes/GroupRouter");     // ✅ new
-const UserRouter = require("./Routes/UserRouter");       // ✅ new
+const BudgetRouter = require("./Routes/BudgetRouter");
+const GroupRouter = require("./Routes/GroupRouter");
+const UserRouter = require("./Routes/UserRouter");
 const ensureAuthenticated = require("./Middlewares/Auth");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Middlewares
-app.use(cors());
-app.use(express.json()); // ✅ replaces bodyParser.json()
+app.use(cors({
+  origin: [
+    "http://localhost:3000",             // ✅ local development
+    "https://your-frontend.vercel.app"   // ✅ replace with actual Vercel frontend URL
+  ],
+  credentials: true
+}));
 
-// ✅ Serve uploaded files (avatars etc.)
+app.use(express.json());
+
+// ✅ Serve uploaded files (avatars, etc.)
 app.use("/uploads", express.static("uploads"));
 
 // Health check route
@@ -27,12 +34,12 @@ app.get("/ping", (req, res) => res.send("PONG"));
 // Routes
 app.use("/auth", AuthRouter);
 app.use("/products", ProductRouter);
-app.use("/expenses", ensureAuthenticated, ExpenseRouter); // ✅ protected
-app.use("/budgets", ensureAuthenticated, BudgetRouter);   // ✅ protected
-app.use("/groups", ensureAuthenticated, GroupRouter);     // ✅ protected
-app.use("/user", ensureAuthenticated, UserRouter);        // ✅ protected
+app.use("/expenses", ensureAuthenticated, ExpenseRouter);
+app.use("/budgets", ensureAuthenticated, BudgetRouter);
+app.use("/groups", ensureAuthenticated, GroupRouter);
+app.use("/user", ensureAuthenticated, UserRouter);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
 });
