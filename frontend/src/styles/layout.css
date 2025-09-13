@@ -163,3 +163,43 @@ body { background: var(--bg); }
 
 .nav-item.logout { margin-top: 14px; color:#c0392b; }
 
+/* Grid system for consistent 2-column layout */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* two equal-width columns */
+  gap: 20px;
+  align-items: start; /* top-align items */
+}
+
+/* Ensure each card expands inside grid */
+.grid-2 .card {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.table-wrap {
+  max-height: 400px;   /* adjust as needed */
+  overflow-y: auto;
+}
+
+/* Limit input bar width inside cards */
+.card.wide-card {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.card.wide-card .form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.card.wide-card .input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.card.wide-card button {
+  min-width: 120px;
+}

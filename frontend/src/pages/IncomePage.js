@@ -8,10 +8,11 @@ import { CategoryBreakdownChart, CashFlowChart } from "../components/Charts";
 export default function IncomePage() {
   const [items, setItems] = useState([]);
 
-  const fetchExpenses = async () => {
+  const fetchIncomes = async () => {
     try {
       const res = await fetchWithAuth(`${APIUrl}/expenses`, { method: "GET" });
       const j = await res.json();
+      // ✅ Only keep positive amounts (incomes)
       setItems((j.data || []).filter((e) => Number(e.amount) > 0));
     } catch (err) {
       console.error(err);
@@ -19,7 +20,7 @@ export default function IncomePage() {
   };
 
   useEffect(() => {
-    fetchExpenses();
+    fetchIncomes();
   }, []);
 
   return (
@@ -34,19 +35,20 @@ export default function IncomePage() {
             loggedInUser={localStorage.getItem("loggedInUser")}
           />
         </div>
-        <div className="card">
+        <div className="card wide-card">
           <h3>Add Income</h3>
           <ExpenseTrackerForm
+            isIncome={true} // ✅ Pass flag to use income categories
             addExpenses={async (d) => {
-              d.amount = Math.abs(Number(d.amount || 0));
+              d.amount = Math.abs(Number(d.amount || 0)); // ✅ Force positive
               await fetchWithAuth(`${APIUrl}/expenses`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(d),
               });
-              fetchExpenses();
+              fetchIncomes();
             }}
-            fetchExpenses={fetchExpenses}
+            fetchExpenses={fetchIncomes}
           />
         </div>
       </div>

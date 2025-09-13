@@ -1,0 +1,82 @@
+/* Sidebar container */
+.sidebar {
+  width: 240px;
+  background: #fff;
+  border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+/* User avatar */
+.sidebar .avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #7c3aed; /* purple */
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+/* User email/name */
+.sidebar .user-info {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+/* Nav items */
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 12px;
+}
+
+.sidebar nav ul li a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+  transition: all 0.2s ease-in-out;
+}
+
+.sidebar nav ul li a:hover {
+  background: #f3f0ff;
+  color: #7c3aed;
+}
+
+.sidebar nav ul li a.active {
+  background: #7c3aed;
+  color: #fff;
+}
+
+/* Logout button */
+.sidebar .logout {
+  margin-top: auto;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #e11d48;
+  background: #fff0f3;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.sidebar .logout:hover {
+  background: #ffe4e8;
+}

@@ -1,25 +1,53 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const ExpenseSchema = new Schema(
-  {
-    text: { type: String, required: true },
-    amount: { type: Number, required: true },
-    category: { type: String, default: "Other" },
-    recurring: {
-      interval: { type: String, enum: ["daily", "weekly", "monthly", "yearly"], default: null },
-      nextRun: { type: Date, default: null },
+const GroupExpenseSchema = new Schema({
+  text: String,
+  amount: Number,
+  paidBy: { type: Schema.Types.ObjectId, ref: "User" },
+  split: [
+    {
+      member: { type: Schema.Types.ObjectId, ref: "User" },
+      share: Number, // how much this member owes
     },
+  ],
+  createdAt: { type: Date, default: Date.now },
+});
+
+const GroupSchema = new Schema({
+  name: { type: String, required: true },
+  members: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  expenses: [GroupExpenseSchema],
+});
+
+const UserSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    refreshToken: { type: String },
+
+    avatar: { type: String, default: "/uploads/avatars/default.png" },
+
+    expenses: [
+      {
+        text: String,
+        amount: Number,
+        category: String,
+        type: { type: String, enum: ["income", "expense"] },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
+
+    budgets: {
+      type: Map,
+      of: Number, // category → budget value
+      default: {},
+    },
+
+    groups: [GroupSchema],
   },
   { timestamps: true }
 );
-
-const UserSchema = new Schema({
-  name: { type: String, required: true },   // ✅ Added
-  email: { type: String, required: true, unique: true }, // ✅ Added
-  password: { type: String, required: true },
-  refreshToken: { type: String }, // ✅ optional refresh token storage
-  expenses: [ExpenseSchema],
-});
 
 module.exports = mongoose.model("User", UserSchema);

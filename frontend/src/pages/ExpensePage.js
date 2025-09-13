@@ -1,4 +1,3 @@
-// src/pages/ExpensePage.js
 import React, { useEffect, useState } from "react";
 import ExpensesTable from "../components/ExpensesTable";
 import ExpenseTrackerForm from "../components/ExpenseTrackerForm";
@@ -25,30 +24,32 @@ export default function ExpensePage() {
   return (
     <div>
       <h1 className="page-title">Expense</h1>
-      <div className="grid-2">
-        <div className="card">
-          <ExpensesTable
-            expenses={items}
-            handleDeleteExpense={() => {}}
-            handleEditExpense={() => {}}
-            loggedInUser={localStorage.getItem("loggedInUser")}
-          />
-        </div>
-        <div className="card">
-          <h3>Add Expense</h3>
-          <ExpenseTrackerForm
-            addExpenses={async (d) => {
-              d.amount = -Math.abs(Number(d.amount || 0));
-              await fetchWithAuth(`${APIUrl}/expenses`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(d),
-              });
-              fetchExpenses();
-            }}
-            fetchExpenses={fetchExpenses}
-          />
-        </div>
+
+      {/* Transactions Table full width */}
+      <div className="card">
+        <ExpensesTable
+          expenses={items}
+          handleDeleteExpense={() => {}}
+          handleEditExpense={() => {}}
+          loggedInUser={localStorage.getItem("loggedInUser")}
+        />
+      </div>
+
+      {/* Add Expense full width */}
+      <div className="card">
+        <h3>Add Expense</h3>
+        <ExpenseTrackerForm
+          addExpenses={async (d) => {
+            d.amount = -Math.abs(Number(d.amount || 0));
+            await fetchWithAuth(`${APIUrl}/expenses`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(d),
+            });
+            fetchExpenses();
+          }}
+          fetchExpenses={fetchExpenses}
+        />
       </div>
 
       {/* Charts */}

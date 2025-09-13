@@ -1,0 +1,75 @@
+/* Groups Page Styles */
+.groups-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: var(--panel);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.04);
+  margin-bottom: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-row .input {
+  flex: 1;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.card h3 {
+  margin: 0 0 6px;
+  color: #0f172a;
+}
+
+.card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #5b21b6;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.btn-ghost:hover {
+  background: rgba(99,102,241,0.08);
+}
+
+.mt-2 {
+  margin-top: 10px;
+}
+
+.mt-6 {
+  margin-top: 24px;
+}

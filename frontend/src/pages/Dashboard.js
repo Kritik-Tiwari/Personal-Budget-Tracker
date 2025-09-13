@@ -1,9 +1,7 @@
-// src/pages/Dashboard.js
 import React, { useEffect, useState } from "react";
 import { APIUrl, handleError, handleSuccess, fetchWithAuth } from "../utils";
 import ExpenseDetails from "../components/ExpenseDetails";
 import ExpensesTable from "../components/ExpensesTable";
-import ExpenseTrackerForm from "../components/ExpenseTrackerForm";
 import { CategoryBreakdownChart, CashFlowChart } from "../components/Charts";
 
 export default function Dashboard() {
@@ -71,21 +69,6 @@ export default function Dashboard() {
     }
   };
 
-  const addExpenses = async (data) => {
-    try {
-      const res = await fetchWithAuth(`${APIUrl}/expenses`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const result = await res.json();
-      setExpenses(result.data || []);
-      handleSuccess(result.message || "Added");
-    } catch (err) {
-      handleError(err);
-    }
-  };
-
   return (
     <div className="main-area">
       <h1 className="page-title">Welcome, {loggedInUser}</h1>
@@ -107,22 +90,14 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Table + Form */}
-      <div className="grid-2 mt-6">
+      {/* Table only (no add transaction here now) */}
+      <div className="mt-6">
         <div className="card">
           <ExpensesTable
             expenses={expenses}
             handleDeleteExpense={handleDeleteExpense}
             handleEditExpense={handleEditExpense}
             loggedInUser={loggedInUser}
-          />
-        </div>
-
-        <div className="card">
-          <h3>Add Transaction</h3>
-          <ExpenseTrackerForm
-            addExpenses={addExpenses}
-            fetchExpenses={fetchExpenses}
           />
         </div>
       </div>

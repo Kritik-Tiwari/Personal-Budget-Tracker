@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { APIUrl, handleError, handleSuccess } from "../utils";
-import "../styles/auth.css";
+import "../App.css";
 
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -18,10 +18,11 @@ export default function Signup() {
       const res = await fetch(`${APIUrl}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(form), // ✅ send JSON
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Signup failed");
+
+      const responseData = await res.json();
+      if (!res.ok) throw new Error(responseData.message || "Signup failed");
 
       handleSuccess("Signup successful! Please log in.");
       navigate("/login");
@@ -40,6 +41,7 @@ export default function Signup() {
           <p className="subtitle">Please enter your details to sign up</p>
 
           <form onSubmit={handleSubmit}>
+            {/* Full Name */}
             <div className="form-group">
               <label>Full Name</label>
               <input
@@ -52,6 +54,7 @@ export default function Signup() {
               />
             </div>
 
+            {/* Email */}
             <div className="form-group">
               <label>Email Address</label>
               <input
@@ -64,6 +67,7 @@ export default function Signup() {
               />
             </div>
 
+            {/* Password */}
             <div className="form-group password-group">
               <label>Password</label>
               <div className="password-wrapper">

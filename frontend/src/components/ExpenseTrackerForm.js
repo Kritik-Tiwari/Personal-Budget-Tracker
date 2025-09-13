@@ -1,7 +1,7 @@
-// src/ExpenseTrackerForm.js
+// src/components/ExpenseTrackerForm.js
 import React, { useState } from "react";
 
-function ExpenseTrackerForm({ addExpenses, fetchExpenses }) {
+function ExpenseTrackerForm({ addExpenses, fetchExpenses, isIncome }) {
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Other");
@@ -25,11 +25,12 @@ function ExpenseTrackerForm({ addExpenses, fetchExpenses }) {
     if (fetchExpenses) fetchExpenses();
   };
 
-  return (
-    <div className="card">
-      <h3 style={{ margin: 0, marginBottom: 8 }}>Add Transaction</h3>
-      <div className="small muted">Quickly add income or expense</div>
+  // ✅ Different categories for income vs expense
+  const incomeCategories = ["Salary", "Business", "Investments", "Gifts", "Other"];
+  const expenseCategories = ["Food", "Transport", "Bills", "Shopping", "Entertainment", "Other"];
 
+  return (
+    <div>
       <div className="form-row" style={{ marginTop: 12 }}>
         <input
           className="input"
@@ -39,27 +40,35 @@ function ExpenseTrackerForm({ addExpenses, fetchExpenses }) {
         />
         <input
           className="input"
-          placeholder="Amount (e.g., 500 or -200)"
+          placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
 
       <div className="form-row">
-        <select className="select" value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option>Other</option>
-          <option>Salary</option>
-          <option>Groceries</option>
-          <option>Transport</option>
-          <option>Entertainment</option>
+        <select
+          className="select"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          {(isIncome ? incomeCategories : expenseCategories).map((c) => (
+            <option key={c}>{c}</option>
+          ))}
         </select>
         <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-          <input type="checkbox" checked={recurring} onChange={(e) => setRecurring(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={recurring}
+            onChange={(e) => setRecurring(e.target.checked)}
+          />
           Recurring
         </label>
       </div>
 
-      <button className="btn btn-primary add-btn" onClick={handleSubmit}>Add Transaction</button>
+      <button className="btn btn-primary add-btn" onClick={handleSubmit}>
+        {isIncome ? "Add Income" : "Add Expense"}
+      </button>
     </div>
   );
 }

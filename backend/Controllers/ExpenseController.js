@@ -1,6 +1,6 @@
 const UserModel = require("../Models/User");
 
-// ➕ Add new expense
+// ➕ Add new record (expense or income)
 const addExpenses = async (req, res) => {
   const body = req.body;
   const { _id } = req.user || {};
@@ -15,11 +15,16 @@ const addExpenses = async (req, res) => {
       return res.status(404).json({ message: "User not found", success: false });
     }
 
-    userData.expenses.push(body);
+    // 👇 force type field
+    userData.expenses.push({
+      ...body,
+      type: body.type || "expense",
+    });
+
     await userData.save();
 
     return res.status(200).json({
-      message: "Expense Added Successfully",
+      message: `${body.type || "Expense"} Added Successfully`,
       success: true,
       data: userData.expenses,
     });
@@ -33,7 +38,7 @@ const addExpenses = async (req, res) => {
   }
 };
 
-// 📥 Fetch all expenses for logged-in user
+// 📥 Fetch all records
 const fetchExpenses = async (req, res) => {
   const { _id } = req.user || {};
 
@@ -49,7 +54,7 @@ const fetchExpenses = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Fetched Expenses Successfully",
+      message: "Fetched Records Successfully",
       success: true,
       data: userData.expenses,
     });
@@ -63,7 +68,7 @@ const fetchExpenses = async (req, res) => {
   }
 };
 
-// ❌ Delete an expense by ID
+// ❌ Delete
 const deleteExpenses = async (req, res) => {
   const { expenseId } = req.params;
   const { _id } = req.user || {};
@@ -84,7 +89,7 @@ const deleteExpenses = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Expense deleted successfully",
+      message: "Record deleted successfully",
       success: true,
       data: userData.expenses,
     });
@@ -98,7 +103,7 @@ const deleteExpenses = async (req, res) => {
   }
 };
 
-// ✏️ Edit/Update an expense by ID
+// ✏️ Edit
 const editExpense = async (req, res) => {
   const { expenseId } = req.params;
   const { _id } = req.user || {};
@@ -115,16 +120,15 @@ const editExpense = async (req, res) => {
 
     const expense = userData.expenses.id(expenseId);
     if (!expense) {
-      return res.status(404).json({ message: "Expense not found", success: false });
+      return res.status(404).json({ message: "Record not found", success: false });
     }
 
-    // Update fields
     Object.assign(expense, req.body);
 
     await userData.save();
 
     return res.status(200).json({
-      message: "Expense Updated Successfully",
+      message: "Record Updated Successfully",
       success: true,
       data: userData.expenses,
     });
@@ -138,10 +142,9 @@ const editExpense = async (req, res) => {
   }
 };
 
-// ✅ Export everything properly
 module.exports = {
   addExpenses,
   fetchExpenses,
   deleteExpenses,
-  editExpense, // 👈 new controller
+  editExpense,
 };
