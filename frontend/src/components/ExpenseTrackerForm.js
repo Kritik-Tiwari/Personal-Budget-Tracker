@@ -1,76 +1,89 @@
-// src/components/ExpenseTrackerForm.js
 import React, { useState } from "react";
+import { incomeCategories, expenseCategories } from "../constants/categories";
+import { handleError } from "../utils";
 
-function ExpenseTrackerForm({ addExpenses, fetchExpenses, isIncome }) {
-  const [text, setText] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("Other");
-  const [recurring, setRecurring] = useState(false);
+export default function ExpenseTrackerForm({ isIncome, addExpenses }) {
+  const [form, setForm] = useState({
+    text: "",
+    amount: "",
+    category: "Other",
+  });
+
+  const categories = isIncome ? incomeCategories : expenseCategories;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!text || !amount) return alert("Please enter description and amount");
-    const payload = {
-      text,
-      amount: Number(amount),
-      category,
-      recurring,
-      createdAt: new Date().toISOString(),
-    };
-    await addExpenses(payload);
-    setText("");
-    setAmount("");
-    setCategory("Other");
-    setRecurring(false);
-    if (fetchExpenses) fetchExpenses();
+    if (!form.text || !form.amount) {
+      return handleError("Please fill all fields");
+    }
+
+    // ✅ Send only the string label to backend
+    await addExpenses({
+      ...form,
+      category: form.category.trim(),
+      text: form.text.trim(),
+    });
+
+    // Reset after submit
+    setForm({
+      text: "",
+      amount: "",
+      category: "Other",
+    });
   };
 
-  // ✅ Different categories for income vs expense
-  const incomeCategories = ["Salary", "Business", "Investments", "Gifts", "Other"];
-  const expenseCategories = ["Food", "Transport", "Bills", "Shopping", "Entertainment", "Other"];
-
   return (
-    <div>
-      <div className="form-row" style={{ marginTop: 12 }}>
+    <form onSubmit={handleSubmit}>
+      <div className="form-group">
         <input
-          className="input"
+          type="text"
+          name="text"
+          value={form.text}
+          onChange={handleChange}
           placeholder="Description"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
-        <input
           className="input"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          required
         />
       </div>
 
-      <div className="form-row">
+      <div className="form-group">
+        <input
+          type="number"
+          name="amount"
+          value={form.amount}
+          onChange={handleChange}
+          placeholder="Amount"
+          className="input"
+          required
+        />
+      </div>
+
+      <div className="form-group">
         <select
+          name="category"
+          value={form.category}
+          onChange={handleChange}
           className="select"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
         >
-          {(isIncome ? incomeCategories : expenseCategories).map((c) => (
-            <option key={c}>{c}</option>
+          {categories.map((c) => (
+            <option key={c.label} value={c.label}>
+              {c.icon} {c.label}
+            </option>
           ))}
         </select>
-        <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-          <input
-            type="checkbox"
-            checked={recurring}
-            onChange={(e) => setRecurring(e.target.checked)}
-          />
-          Recurring
-        </label>
       </div>
 
-      <button className="btn btn-primary add-btn" onClick={handleSubmit}>
+      <button type="submit" className="btn-primary">
         {isIncome ? "Add Income" : "Add Expense"}
       </button>
-    </div>
+    </form>
   );
 }
-
-export default ExpenseTrackerForm;

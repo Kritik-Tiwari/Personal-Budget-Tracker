@@ -1,6 +1,8 @@
+// src/pages/GroupDetailsPage.js
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchWithAuth, APIUrl } from "../utils";
+import "../styles/forms.css";
 
 export default function GroupDetailsPage() {
   const { groupId } = useParams();
@@ -77,73 +79,100 @@ export default function GroupDetailsPage() {
     <div>
       {group && (
         <>
-          <h1>{group.name}</h1>
-          <h3>Members</h3>
-          <ul>
-            {group.members.map((m) => (
-              <li key={m._id}>{m.name}</li>
-            ))}
-          </ul>
+          <h1 className="page-title">{group.name}</h1>
+
+          {/* Members */}
+          <div className="card">
+            <h3>Members</h3>
+            <ul className="small">
+              {group.members.map((m) => (
+                <li key={m._id}>{m.name}</li>
+              ))}
+            </ul>
+          </div>
 
           {/* Add expense */}
-          <h3>Add Expense</h3>
-          <input
-            placeholder="Description"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
-          <input
-            placeholder="Amount"
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
-          />
-          <button onClick={addExpense}>Add Expense</button>
+          <div className="card mt-4">
+            <h3>Add Expense</h3>
+            <div className="form-row">
+              <input
+                className="input"
+                placeholder="Description"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+              <input
+                className="input"
+                type="number"
+                placeholder="Amount"
+                value={amount}
+                onChange={(e) => setAmount(Number(e.target.value))}
+              />
+              <button className="btn btn-primary" onClick={addExpense}>
+                Add
+              </button>
+            </div>
+          </div>
 
           {/* Balances */}
-          <h3>Balances</h3>
-          <ul>
-            {balances.map((b) => (
-              <li key={b.user._id}>
-                {b.user.name}:{" "}
-                {b.balance > 0 ? `+₹${b.balance}` : `-₹${-b.balance}`}
-              </li>
-            ))}
-          </ul>
-
-          {/* Settle up */}
-          <h3>Settle Up</h3>
-          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-            <select
-              value={settleFrom}
-              onChange={(e) => setSettleFrom(e.target.value)}
-            >
-              <option value="">From</option>
-              {group.members.map((m) => (
-                <option key={m._id} value={m._id}>
-                  {m.name}
-                </option>
+          <div className="card mt-4">
+            <h3>Balances</h3>
+            <ul className="small">
+              {balances.map((b) => (
+                <li key={b.user._id}>
+                  {b.user.name}:{" "}
+                  {b.balance > 0 ? (
+                    <span style={{ color: "green" }}>+₹{b.balance}</span>
+                  ) : (
+                    <span style={{ color: "red" }}>-₹{-b.balance}</span>
+                  )}
+                </li>
               ))}
-            </select>
+            </ul>
+          </div>
 
-            <select value={settleTo} onChange={(e) => setSettleTo(e.target.value)}>
-              <option value="">To</option>
-              {group.members.map((m) => (
-                <option key={m._id} value={m._id}>
-                  {m.name}
-                </option>
-              ))}
-            </select>
+          {/* Settlement */}
+          <div className="card mt-4">
+            <h3>Settle Up</h3>
+            <div className="form-row">
+              <select
+                className="input"
+                value={settleFrom}
+                onChange={(e) => setSettleFrom(e.target.value)}
+              >
+                <option value="">From</option>
+                {group.members.map((m) => (
+                  <option key={m._id} value={m._id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
 
-            <input
-              placeholder="Amount"
-              type="number"
-              value={settleAmount}
-              onChange={(e) => setSettleAmount(e.target.value)}
-              style={{ width: "100px" }}
-            />
+              <select
+                className="input"
+                value={settleTo}
+                onChange={(e) => setSettleTo(e.target.value)}
+              >
+                <option value="">To</option>
+                {group.members.map((m) => (
+                  <option key={m._id} value={m._id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
 
-            <button onClick={settleUp}>Settle</button>
+              <input
+                className="input"
+                placeholder="Amount"
+                type="number"
+                value={settleAmount}
+                onChange={(e) => setSettleAmount(e.target.value)}
+              />
+
+              <button className="btn btn-primary" onClick={settleUp}>
+                Settle
+              </button>
+            </div>
           </div>
         </>
       )}

@@ -1,3 +1,4 @@
+// src/components/Login.js
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { APIUrl, handleError, handleSuccess } from "../utils";
@@ -5,7 +6,8 @@ import "../styles/auth.css";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [showPassword, setShowPassword] = useState(false); // 👁 toggle
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -14,6 +16,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await fetch(`${APIUrl}/auth/login`, {
         method: "POST",
@@ -23,17 +26,19 @@ export default function Login() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Login failed");
 
-      // ✅ Save tokens correctly
-      localStorage.setItem("token", data.accessToken);   // use accessToken
+      // ✅ Save tokens
+      localStorage.setItem("token", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
 
-      // ✅ Save logged in user correctly
-      localStorage.setItem("loggedInUser", data.name || form.email);
+      // ✅ Save name instead of email
+      localStorage.setItem("loggedInUser", data.user?.name || form.email);
 
-      handleSuccess("Login successful!");
-      navigate("/dashboard");
+      handleSuccess("Login successful ✅");
+      setTimeout(() => navigate("/dashboard"), 1000);
     } catch (err) {
       handleError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,8 +85,8 @@ export default function Login() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary">
-              Login
+            <button type="submit" className="btn-primary" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
 

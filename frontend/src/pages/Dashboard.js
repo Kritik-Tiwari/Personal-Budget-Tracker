@@ -1,17 +1,19 @@
+// src/pages/Dashboard.js
 import React, { useEffect, useState } from "react";
-import { APIUrl, handleError, handleSuccess, fetchWithAuth } from "../utils";
+import { APIUrl, handleError, fetchWithAuth } from "../utils";
 import ExpenseDetails from "../components/ExpenseDetails";
 import ExpensesTable from "../components/ExpensesTable";
 import { CategoryBreakdownChart, CashFlowChart } from "../components/Charts";
 
 export default function Dashboard() {
-  const [loggedInUser, setLoggedInUser] = useState("");
+  const [loggedInUser, setLoggedInUser] = useState("User");
   const [expenses, setExpenses] = useState([]);
   const [expenseAmt, setExpenseAmt] = useState(0);
   const [incomeAmt, setIncomeAmt] = useState(0);
 
   useEffect(() => {
-    setLoggedInUser(localStorage.getItem("loggedInUser") || "User");
+    const storedUser = localStorage.getItem("loggedInUser");
+    setLoggedInUser(storedUser || "User");
     fetchExpenses();
   }, []);
 
@@ -78,9 +80,9 @@ export default function Dashboard() {
         <ExpenseDetails incomeAmt={incomeAmt} expenseAmt={expenseAmt} />
       </div>
 
-      {/* Charts */}
-      <div className="grid-2 mt-6">
-        <div className="card">
+      {/* Charts stacked vertically */}
+      <div className="mt-6">
+        <div className="card" style={{ marginBottom: 24 }}>
           <h3>Category Breakdown</h3>
           <CategoryBreakdownChart expenses={expenses} />
         </div>
@@ -90,7 +92,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Table only (no add transaction here now) */}
+      {/* Table */}
       <div className="mt-6">
         <div className="card">
           <ExpensesTable

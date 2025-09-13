@@ -5,13 +5,13 @@ const UserModel = require("../Models/User");
 // Generate JWT and Refresh Token
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
-    { email: user.email, _id: user._id },
+    { email: user.email, _id: user._id, name: user.name }, // ✅ include name
     process.env.JWT_SECRET,
     { expiresIn: "15m" } // short-lived access token
   );
 
   const refreshToken = jwt.sign(
-    { email: user.email, _id: user._id },
+    { email: user.email, _id: user._id, name: user.name }, // ✅ include name
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: "7d" }
   );
@@ -34,12 +34,22 @@ const signup = async (req, res) => {
     const user = new UserModel({ name, email, password: hashedPassword });
     await user.save();
 
-    res.status(201).json({ message: "Signup successful", success: true });
-   } catch (err) {
-  console.error("Signup Error:", err); 
-  res.status(500).json({ message: "Internal server error", success: false });
-  }
+    // Generate tokens immediately after signup
+    const { accessToken, refreshToken } = generateTokens(user);
+    user.refreshToken = refreshToken;
+    await user.save();
 
+    res.status(201).json({
+      message: "Signup successful",
+      success: true,
+      accessToken,
+      refreshToken,
+      user: { id: user._id, name: user.name, email: user.email },
+    });
+  } catch (err) {
+    console.error("Signup Error:", err);
+    res.status(500).json({ message: "Internal server error", success: false });
+  }
 };
 
 // Login
@@ -69,10 +79,10 @@ const login = async (req, res) => {
       success: true,
       accessToken,
       refreshToken,
-      email,
-      name: user.name,
+      user: { id: user._id, name: user.name, email: user.email }, // ✅ include name in response
     });
   } catch (err) {
+    console.error("Login Error:", err);
     res.status(500).json({ message: "Internal server error", success: false });
   }
 };
@@ -80,22 +90,39 @@ const login = async (req, res) => {
 // Refresh Token
 const refresh = async (req, res) => {
   const { refreshToken } = req.body;
-  if (!refreshToken) return res.status(401).json({ message: "No refresh token", success: false });
+  if (!refreshToken)
+    return res
+      .status(401)
+      .json({ message: "No refresh token", success: false });
 
   try {
     const user = await UserModel.findOne({ refreshToken });
-    if (!user) return res.status(403).json({ message: "Invalid refresh token", success: false });
+    if (!user)
+      return res
+        .status(403)
+        .json({ message: "Invalid refresh token", success: false });
 
     jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
-      if (err) return res.status(403).json({ message: "Invalid refresh token", success: false });
+      if (err)
+        return res
+          .status(403)
+          .json({ message: "Invalid refresh token", success: false });
 
-      const { accessToken, refreshToken: newRefreshToken } = generateTokens(user);
+      const { accessToken, refreshToken: newRefreshToken } = generateTokens(
+        user
+      );
       user.refreshToken = newRefreshToken;
       user.save();
 
-      return res.json({ success: true, accessToken, refreshToken: newRefreshToken });
+      return res.json({
+        success: true,
+        accessToken,
+        refreshToken: newRefreshToken,
+        user: { id: user._id, name: user.name, email: user.email }, // ✅ return here too
+      });
     });
   } catch (err) {
+    console.error("Refresh Error:", err);
     res.status(500).json({ message: "Internal server error", success: false });
   }
 };

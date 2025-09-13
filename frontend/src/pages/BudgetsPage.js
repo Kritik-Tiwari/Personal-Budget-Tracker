@@ -1,7 +1,6 @@
-// src/pages/BudgetsPage.js
 import React, { useState, useEffect } from "react";
 import { fetchWithAuth, APIUrl } from "../utils";
-import "../styles/budgets.css";
+import "../styles/forms.css";
 
 export default function BudgetsPage() {
   const [budgets, setBudgets] = useState([
@@ -12,14 +11,11 @@ export default function BudgetsPage() {
   const [newLimit, setNewLimit] = useState("");
   const [expenses, setExpenses] = useState([]);
 
-  // Fetch all expenses from backend
   const fetchExpenses = async () => {
     try {
       const res = await fetchWithAuth(`${APIUrl}/expenses`, { method: "GET" });
       const data = await res.json();
-      if (data.success) {
-        setExpenses(data.data || []);
-      }
+      if (data.success) setExpenses(data.data || []);
     } catch (err) {
       console.error("Fetch expenses error:", err);
     }
@@ -29,20 +25,14 @@ export default function BudgetsPage() {
     fetchExpenses();
   }, []);
 
-  // Calculate spent per category
-  const getSpent = (category) => {
-    return expenses
+  const getSpent = (category) =>
+    expenses
       .filter((e) => e.category === category)
       .reduce((sum, e) => sum + Math.abs(Number(e.amount || 0)), 0);
-  };
 
-  // Add new budget category
   const addBudget = () => {
     if (!newCategory.trim() || !newLimit) return;
-    setBudgets([
-      ...budgets,
-      { category: newCategory.trim(), limit: Number(newLimit) },
-    ]);
+    setBudgets([...budgets, { category: newCategory.trim(), limit: Number(newLimit) }]);
     setNewCategory("");
     setNewLimit("");
   };
@@ -51,17 +41,20 @@ export default function BudgetsPage() {
     <div>
       <h1 className="page-title">Budgets</h1>
 
-      {/* Add new budget form */}
       <div className="card">
         <h3>Set Category Budget</h3>
         <p className="small muted">Plan monthly budgets by category</p>
-        <div className="form-row">
+
+        <div className="form-group">
           <input
             className="input"
             placeholder="Category (e.g. Shopping)"
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
           />
+        </div>
+
+        <div className="form-group">
           <input
             className="input"
             type="number"
@@ -69,14 +62,14 @@ export default function BudgetsPage() {
             value={newLimit}
             onChange={(e) => setNewLimit(e.target.value)}
           />
-          <button className="btn btn-primary" onClick={addBudget}>
-            Add
-          </button>
         </div>
+
+        <button className="btn btn-primary full-width" onClick={addBudget}>
+          Add
+        </button>
       </div>
 
-      {/* Budget cards */}
-      <div className="grid-2">
+      <div className="grid-2 mt-6">
         {budgets.map((b, i) => {
           const spent = getSpent(b.category);
           const percent = Math.min(100, (spent / b.limit) * 100);

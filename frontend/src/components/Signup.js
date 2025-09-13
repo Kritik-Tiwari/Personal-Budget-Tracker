@@ -1,3 +1,4 @@
+// src/components/Signup.js
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { APIUrl, handleError, handleSuccess } from "../utils";
@@ -6,6 +7,7 @@ import "../App.css";
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -14,20 +16,34 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ Client-side password validation
+    if (form.password.length < 8) {
+      return handleError("Password must be at least 8 characters long");
+    }
+
+    setLoading(true);
     try {
       const res = await fetch(`${APIUrl}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form), // ✅ send JSON
+        body: JSON.stringify(form),
       });
 
-      const responseData = await res.json();
-      if (!res.ok) throw new Error(responseData.message || "Signup failed");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Signup failed");
 
-      handleSuccess("Signup successful! Please log in.");
-      navigate("/login");
+      // ✅ Save tokens & user info immediately (auto login)
+      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("loggedInUser", data.user?.name || form.email);
+
+      handleSuccess("Signup successful! 🎉 Redirecting...");
+      setTimeout(() => navigate("/dashboard"), 1000);
     } catch (err) {
       handleError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,8 +104,8 @@ export default function Signup() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary">
-              Sign Up
+            <button type="submit" className="btn-primary" disabled={loading}>
+              {loading ? "Signing up..." : "Sign Up"}
             </button>
           </form>
 

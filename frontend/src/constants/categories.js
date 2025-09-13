@@ -1,24 +1,33 @@
-// Income categories
-export const INCOME_CATEGORIES = [
-  { name: "Salary", color: "#4caf50" },
-  { name: "Business", color: "#2196f3" },
-  { name: "Investments", color: "#9c27b0" },
-  { name: "Freelance", color: "#ff9800" },
-  { name: "Gifts", color: "#795548" },
-  { name: "Other", color: "#9e9e9e" },
+// ✅ Income categories (with icons)
+export const incomeCategories = [
+  { label: "Salary", icon: "💼" },
+  { label: "Business", icon: "🏢" },
+  { label: "Freelancing", icon: "🖥️" },
+  { label: "Investments", icon: "📈" },
+  { label: "Gifts", icon: "🎁" },
+  { label: "Rental Income", icon: "🏠" },
+  { label: "Side Hustle", icon: "⚡" },
+  { label: "Interest", icon: "🏦" },
+  { label: "Bonus", icon: "✨" },
+  { label: "Other", icon: "🔖" },
 ];
 
-// Expense categories
-export const EXPENSE_CATEGORIES = [
-  { name: "Food", color: "#f44336" },
-  { name: "Groceries", color: "#ff5722" },
-  { name: "Transport", color: "#009688" },
-  { name: "Rent", color: "#3f51b5" },
-  { name: "Bills", color: "#607d8b" },
-  { name: "Shopping", color: "#e91e63" },
-  { name: "Entertainment", color: "#673ab7" },
-  { name: "Healthcare", color: "#cddc39" },
-  { name: "Travel", color: "#00bcd4" },
-  { name: "Education", color: "#8bc34a" },
-  { name: "Other", color: "#9e9e9e" },
+// ✅ Expense categories (with icons)
+export const expenseCategories = [
+  { label: "Food and Dining", icon: "🍽️" },
+  { label: "Transport", icon: "🚌" },
+  { label: "Shopping", icon: "🛍️" },
+  { label: "Entertainment", icon: "🎬" },
+  { label: "Bills and Utilities", icon: "💡" },
+  { label: "Groceries", icon: "🥦" },
+  { label: "Health", icon: "💊" },
+  { label: "Education", icon: "📚" },
+  { label: "Travel", icon: "✈️" },
+  { label: "Subscriptions", icon: "📺" },
+  { label: "Housing / Rent", icon: "🏠" },
+  { label: "Insurance", icon: "🛡️" },
+  { label: "Taxes", icon: "💰" },
+  { label: "Personal Care", icon: "🧴" },
+  { label: "Miscellaneous", icon: "📦" },
+  { label: "Other", icon: "🔖" },
 ];

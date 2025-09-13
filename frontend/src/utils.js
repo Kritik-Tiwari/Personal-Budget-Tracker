@@ -1,19 +1,19 @@
 // src/utils.js
+import { toast } from "react-toastify";
+
 export const APIUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
-export const handleSuccess = (msg) => {
-  console.log("SUCCESS:", msg);
-};
-
-export const handleError = (err) => {
-  console.error("ERROR:", err);
-};
+// ✅ Toast helpers
+export const handleSuccess = (msg) => toast.success(msg);
+export const handleError = (err) =>
+  toast.error(typeof err === "string" ? err : err?.message || "Something went wrong");
 
 // helper: clear storage + redirect to login
 function logoutAndRedirect() {
   localStorage.removeItem("token");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("loggedInUser");
+  toast.info("Logged out, please login again"); // show popup
   window.location.href = "/login"; // force redirect
 }
 
