@@ -1,21 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { incomeCategories, expenseCategories } from "../constants/categories";
 import { handleError } from "../utils";
 
-export default function ExpenseTrackerForm({ isIncome, addExpenses }) {
+// ✅ Capitalize helper
+const capitalize = (str) =>
+  str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+
+export default function ExpenseTrackerForm({
+  isIncome,
+  addExpenses,
+  initialData = null,
+}) {
   const [form, setForm] = useState({
     text: "",
     amount: "",
-    category: "Other",
+    category: "other", // ✅ lowercase default
   });
 
   const categories = isIncome ? incomeCategories : expenseCategories;
+
+  // ✅ When editing, pre-fill form with normalized lowercase category
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        text: initialData.text || "",
+        amount: initialData.amount || "",
+        category: (initialData.category || "other").toLowerCase(),
+      });
+    }
+  }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: value,
+      [name]: name === "category" ? value.toLowerCase() : value, // ✅ force lowercase internally
     });
   };
 
@@ -25,19 +44,20 @@ export default function ExpenseTrackerForm({ isIncome, addExpenses }) {
       return handleError("Please fill all fields");
     }
 
-    // ✅ Send only the string label to backend
     await addExpenses({
       ...form,
-      category: form.category.trim(),
+      category: form.category.toLowerCase(), // ✅ stored lowercase
       text: form.text.trim(),
     });
 
-    // Reset after submit
-    setForm({
-      text: "",
-      amount: "",
-      category: "Other",
-    });
+    // ✅ Only reset if adding a new record
+    if (!initialData) {
+      setForm({
+        text: "",
+        amount: "",
+        category: "other",
+      });
+    }
   };
 
   return (
@@ -74,15 +94,15 @@ export default function ExpenseTrackerForm({ isIncome, addExpenses }) {
           className="select"
         >
           {categories.map((c) => (
-            <option key={c.label} value={c.label}>
-              {c.icon} {c.label}
+            <option key={c.label} value={c.label.toLowerCase()}>
+              {c.icon} {capitalize(c.label)}
             </option>
           ))}
         </select>
       </div>
 
       <button type="submit" className="btn-primary">
-        {isIncome ? "Add Income" : "Add Expense"}
+        {initialData ? "Update" : isIncome ? "Add Income" : "Add Expense"}
       </button>
     </form>
   );

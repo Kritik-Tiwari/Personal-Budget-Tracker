@@ -5,13 +5,13 @@ const UserModel = require("../Models/User");
 // Generate JWT and Refresh Token
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
-    { email: user.email, _id: user._id, name: user.name }, // ✅ include name
+    { email: user.email, _id: user._id, name: user.name }, // ✅ include _id
     process.env.JWT_SECRET,
     { expiresIn: "15m" } // short-lived access token
   );
 
   const refreshToken = jwt.sign(
-    { email: user.email, _id: user._id, name: user.name }, // ✅ include name
+    { email: user.email, _id: user._id, name: user.name }, // ✅ include _id
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: "7d" }
   );
@@ -19,7 +19,9 @@ const generateTokens = (user) => {
   return { accessToken, refreshToken };
 };
 
+// ======================
 // Signup
+// ======================
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -44,7 +46,7 @@ const signup = async (req, res) => {
       success: true,
       accessToken,
       refreshToken,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: { _id: user._id, name: user.name, email: user.email }, // ✅ fixed
     });
   } catch (err) {
     console.error("Signup Error:", err);
@@ -52,7 +54,9 @@ const signup = async (req, res) => {
   }
 };
 
+// ======================
 // Login
+// ======================
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -79,7 +83,7 @@ const login = async (req, res) => {
       success: true,
       accessToken,
       refreshToken,
-      user: { id: user._id, name: user.name, email: user.email }, // ✅ include name in response
+      user: { _id: user._id, name: user.name, email: user.email }, // ✅ fixed
     });
   } catch (err) {
     console.error("Login Error:", err);
@@ -87,7 +91,9 @@ const login = async (req, res) => {
   }
 };
 
+// ======================
 // Refresh Token
+// ======================
 const refresh = async (req, res) => {
   const { refreshToken } = req.body;
   if (!refreshToken)
@@ -118,7 +124,7 @@ const refresh = async (req, res) => {
         success: true,
         accessToken,
         refreshToken: newRefreshToken,
-        user: { id: user._id, name: user.name, email: user.email }, // ✅ return here too
+        user: { _id: user._id, name: user.name, email: user.email }, // ✅ fixed
       });
     });
   } catch (err) {

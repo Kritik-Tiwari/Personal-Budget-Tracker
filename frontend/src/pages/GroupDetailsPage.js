@@ -1,88 +1,189 @@
-// src/pages/GroupDetailsPage.js
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { fetchWithAuth, APIUrl } from "../utils";
+import { useParams, useNavigate } from "react-router-dom";
+import { fetchWithAuth, APIUrl, handleSuccess, handleError } from "../utils";
 import "../styles/forms.css";
 
 export default function GroupDetailsPage() {
   const { groupId } = useParams();
+  const navigate = useNavigate();
+
   const [group, setGroup] = useState(null);
   const [balances, setBalances] = useState([]);
+
   const [text, setText] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
 
   // Settlement state
   const [settleFrom, setSettleFrom] = useState("");
   const [settleTo, setSettleTo] = useState("");
   const [settleAmount, setSettleAmount] = useState("");
 
+  // Editing group
+  const [editing, setEditing] = useState(false);
+  const [editName, setEditName] = useState("");
+
   const fetchGroup = async () => {
-    const res = await fetchWithAuth(`${APIUrl}/groups`);
-    const j = await res.json();
-    setGroup(j.groups.find((g) => g._id === groupId));
+    try {
+      const res = await fetchWithAuth(`${APIUrl}/groups`);
+      const j = await res.json();
+      const g = j.groups.find((gr) => gr._id === groupId);
+      setGroup(g);
+      setEditName(g?.name || "");
+    } catch {
+      handleError("Failed to fetch group");
+    }
   };
 
   const fetchBalances = async () => {
-    const res = await fetchWithAuth(`${APIUrl}/groups/${groupId}/balances`);
-    const j = await res.json();
-    setBalances(Object.values(j.balances));
+    try {
+      const res = await fetchWithAuth(`${APIUrl}/groups/${groupId}/balances`);
+      const j = await res.json();
+      if (j.success) setBalances(Object.values(j.balances));
+    } catch {
+      handleError("Failed to fetch balances");
+    }
   };
 
   useEffect(() => {
     fetchGroup();
     fetchBalances();
-  }, []);
+  }, [groupId]);
 
+  // ✅ Add expense
   const addExpense = async () => {
     if (!text || !amount) return alert("Enter expense details");
-    await fetchWithAuth(`${APIUrl}/groups/${groupId}/expense`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text,
-        amount,
-        paidBy: group.members[0]._id, // ⚠️ demo: default payer
-        split: group.members.map((m) => ({
-          member: m._id,
-          share: amount / group.members.length,
-        })),
-      }),
-    });
-    fetchGroup();
-    fetchBalances();
-    setText("");
-    setAmount(0);
+    try {
+      await fetchWithAuth(`${APIUrl}/groups/${groupId}/expense`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text,
+          amount: Number(amount),
+          paidBy: group.members[0]._id, // ⚠️ you may change this to loggedInUser
+          split: group.members.map((m) => ({
+            member: m._id,
+            share: Number(amount) / group.members.length,
+          })),
+        }),
+      });
+      handleSuccess("Expense added 💸");
+      setText("");
+      setAmount("");
+      fetchGroup();
+      fetchBalances();
+    } catch {
+      handleError("Failed to add expense");
+    }
   };
 
+  // ✅ Settlement
   const settleUp = async () => {
     if (!settleFrom || !settleTo || !settleAmount)
       return alert("Fill all settlement fields");
 
-    await fetchWithAuth(`${APIUrl}/groups/${groupId}/settle`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from: settleFrom,
-        to: settleTo,
-        amount: Number(settleAmount),
-      }),
-    });
+    try {
+      await fetchWithAuth(`${APIUrl}/groups/${groupId}/settle`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: settleFrom,
+          to: settleTo,
+          amount: Number(settleAmount),
+        }),
+      });
+      handleSuccess("Settlement recorded ✅");
+      setSettleFrom("");
+      setSettleTo("");
+      setSettleAmount("");
+      fetchGroup();
+      fetchBalances();
+    } catch {
+      handleError("Failed to record settlement");
+    }
+  };
 
-    fetchGroup();
-    fetchBalances();
-    setSettleFrom("");
-    setSettleTo("");
-    setSettleAmount("");
+  // ✅ Edit group name
+  const saveGroupName = async () => {
+    try {
+      const res = await fetchWithAuth(`${APIUrl}/groups/${groupId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: editName }),
+      });
+      const j = await res.json();
+      if (j.success) {
+        handleSuccess("Group updated ✏️");
+        setEditing(false);
+        fetchGroup();
+      }
+    } catch {
+      handleError("Failed to update group");
+    }
+  };
+
+  // ✅ Delete group
+  const deleteGroup = async () => {
+    if (!window.confirm("Delete this group?")) return;
+    try {
+      const res = await fetchWithAuth(`${APIUrl}/groups/${groupId}`, {
+        method: "DELETE",
+      });
+      const j = await res.json();
+      if (j.success) {
+        handleSuccess("Group deleted 🗑️");
+        navigate("/groups"); // redirect back
+      }
+    } catch {
+      handleError("Failed to delete group");
+    }
   };
 
   return (
     <div>
       {group && (
         <>
-          <h1 className="page-title">{group.name}</h1>
+          <div className="flex items-center justify-between">
+            {editing ? (
+              <div className="form-row">
+                <input
+                  className="input"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
+                <button className="btn btn-primary small" onClick={saveGroupName}>
+                  Save
+                </button>
+                <button
+                  className="btn btn-secondary small"
+                  onClick={() => setEditing(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <h1 className="page-title">{group.name}</h1>
+            )}
+
+            {!editing && (
+              <div>
+                <button
+                  className="btn btn-secondary small"
+                  onClick={() => setEditing(true)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger small ml-2"
+                  onClick={deleteGroup}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Members */}
-          <div className="card">
+          <div className="card mt-4">
             <h3>Members</h3>
             <ul className="small">
               {group.members.map((m) => (
@@ -106,7 +207,7 @@ export default function GroupDetailsPage() {
                 type="number"
                 placeholder="Amount"
                 value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
+                onChange={(e) => setAmount(e.target.value)}
               />
               <button className="btn btn-primary" onClick={addExpense}>
                 Add

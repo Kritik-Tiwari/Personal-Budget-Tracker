@@ -1,5 +1,4 @@
-// src/pages/Dashboard.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { APIUrl, handleError, fetchWithAuth } from "../utils";
 import ExpenseDetails from "../components/ExpenseDetails";
 import ExpensesTable from "../components/ExpensesTable";
@@ -10,6 +9,10 @@ export default function Dashboard() {
   const [expenses, setExpenses] = useState([]);
   const [expenseAmt, setExpenseAmt] = useState(0);
   const [incomeAmt, setIncomeAmt] = useState(0);
+
+  // 🔘 Separate filters
+  const [pieFilter, setPieFilter] = useState("all");
+  const [flowFilter, setFlowFilter] = useState("all");
 
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
@@ -71,6 +74,22 @@ export default function Dashboard() {
     }
   };
 
+  // ✅ Memoized filter for Pie chart
+  const filteredExpenses = useMemo(() => {
+    if (pieFilter === "all") return expenses;
+    return expenses.filter((e) => e.type === pieFilter);
+  }, [expenses, pieFilter]);
+
+  // 🔘 Tab button
+  const TabButton = ({ value, label, icon, active, onClick }) => (
+    <button
+      className={`tab-btn ${active === value ? "active" : ""}`}
+      onClick={() => onClick(value)}
+    >
+      {icon} {label}
+    </button>
+  );
+
   return (
     <div className="main-area">
       <h1 className="page-title">Welcome, {loggedInUser}</h1>
@@ -80,15 +99,28 @@ export default function Dashboard() {
         <ExpenseDetails incomeAmt={incomeAmt} expenseAmt={expenseAmt} />
       </div>
 
-      {/* Charts stacked vertically */}
+      {/* Charts */}
       <div className="mt-6">
+        {/* === PIE CHART === */}
         <div className="card" style={{ marginBottom: 24 }}>
           <h3>Category Breakdown</h3>
-          <CategoryBreakdownChart expenses={expenses} />
+          <div className="tab-toggle">
+            <TabButton value="all" label="All" icon="🔄" active={pieFilter} onClick={setPieFilter} />
+            <TabButton value="income" label="Income" icon="💼" active={pieFilter} onClick={setPieFilter} />
+            <TabButton value="expense" label="Expense" icon="📉" active={pieFilter} onClick={setPieFilter} />
+          </div>
+          <CategoryBreakdownChart expenses={filteredExpenses} filter={pieFilter} height={320} />
         </div>
+
+        {/* === CASH FLOW CHART === */}
         <div className="card">
           <h3>Cash Flow Over Time</h3>
-          <CashFlowChart expenses={expenses} />
+          <div className="tab-toggle">
+            <TabButton value="all" label="All" icon="🔄" active={flowFilter} onClick={setFlowFilter} />
+            <TabButton value="income" label="Income" icon="💼" active={flowFilter} onClick={setFlowFilter} />
+            <TabButton value="expense" label="Expense" icon="📉" active={flowFilter} onClick={setFlowFilter} />
+          </div>
+          <CashFlowChart expenses={expenses} filter={flowFilter} height={320} />
         </div>
       </div>
 
@@ -103,6 +135,56 @@ export default function Dashboard() {
           />
         </div>
       </div>
+
+      {/* ✅ Styles */}
+      <style>
+        {`
+          .tab-toggle {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #e5e7eb;
+          }
+          .tab-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: color 0.2s ease;
+          }
+          .tab-btn:hover {
+            color: #374151;
+          }
+          .tab-btn.active {
+            color: #4f46e5;
+          }
+          .tab-btn.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            height: 2px;
+            width: 100%;
+            background-color: #4f46e5;
+            transform: scaleX(1);
+            transition: transform 0.3s ease;
+          }
+          .tab-btn::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            height: 2px;
+            width: 100%;
+            background-color: #4f46e5;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+          }
+        `}
+      </style>
     </div>
   );
 }

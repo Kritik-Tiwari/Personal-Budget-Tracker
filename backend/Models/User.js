@@ -7,8 +7,8 @@ const GroupExpenseSchema = new Schema({
   paidBy: { type: Schema.Types.ObjectId, ref: "User" },
   split: [
     {
-      member: { type: Schema.Types.ObjectId, ref: "User" },
-      share: Number, // how much this member owes
+      member: { type: Schema.Types.ObjectId, ref: "User" }, // can keep ObjectId for splits
+      share: Number,
     },
   ],
   createdAt: { type: Date, default: Date.now },
@@ -16,7 +16,7 @@ const GroupExpenseSchema = new Schema({
 
 const GroupSchema = new Schema({
   name: { type: String, required: true },
-  members: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  members: [{ name: String }], // ✅ simplified members with just names
   expenses: [GroupExpenseSchema],
 });
 

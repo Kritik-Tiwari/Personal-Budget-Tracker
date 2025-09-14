@@ -1,4 +1,3 @@
-// src/components/Charts.js
 import React, { useMemo } from "react";
 import {
   ResponsiveContainer,
@@ -12,8 +11,11 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  BarChart,
+  Bar,
 } from "recharts";
 
+// Colors for charts
 const COLORS = [
   "#7c3aed", // purple
   "#82ca9d", // green
@@ -25,24 +27,31 @@ const COLORS = [
   "#f87171", // light red
 ];
 
-export function CategoryBreakdownChart({ expenses }) {
-  const data = useMemo(() => {
+// ✅ Capitalize helper
+const capitalize = (str) =>
+  str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+
+// =========================
+// Pie Chart: Category Breakdown
+// =========================
+export function CategoryBreakdownChart({ expenses, filter = "all", height = 250 }) {
+  const buildData = (items) => {
     const map = new Map();
-    expenses.forEach((e) => {
+    items.forEach((e) => {
       const key = e.category || "Other";
       map.set(key, (map.get(key) || 0) + Math.abs(Number(e.amount) || 0));
     });
 
     let arr = Array.from(map.entries()).map(([name, value]) => ({
-      name,
+      name: capitalize(name),
       value,
     }));
 
     const total = arr.reduce((a, b) => a + b.value, 0);
 
     // ✅ Group small categories (<5%) into "Others"
-    const major = arr.filter((d) => d.value / total >= 0.05);
-    const minor = arr.filter((d) => d.value / total < 0.05);
+    const major = arr.filter((d) => total && d.value / total >= 0.05);
+    const minor = arr.filter((d) => total && d.value / total < 0.05);
 
     if (minor.length) {
       major.push({
@@ -50,14 +59,27 @@ export function CategoryBreakdownChart({ expenses }) {
         value: minor.reduce((a, b) => a + b.value, 0),
       });
     }
-
     return major;
-  }, [expenses]);
+  };
 
-  if (!data.length) return <p className="text-center text-gray-400">No data</p>;
+  const incomeData = useMemo(
+    () => buildData(expenses.filter((e) => e.type === "income")),
+    [expenses]
+  );
+  const expenseData = useMemo(
+    () => buildData(expenses.filter((e) => e.type === "expense")),
+    [expenses]
+  );
+  const allData = useMemo(() => buildData(expenses), [expenses]);
+
+  if (!expenses.length)
+    return <p className="text-center text-gray-400">No data</p>;
+
+  const data =
+    filter === "income" ? incomeData : filter === "expense" ? expenseData : allData;
 
   return (
-    <ResponsiveContainer width="100%" height={250}>
+    <ResponsiveContainer width="100%" height={height}>
       <PieChart>
         <Pie
           data={data}
@@ -82,8 +104,15 @@ export function CategoryBreakdownChart({ expenses }) {
   );
 }
 
-// ✅ Cash Flow Chart unchanged (still your line chart version)
-export function CashFlowChart({ expenses, viewMode = "transaction" }) {
+// =========================
+// Line Chart: Cash Flow Over Time
+// =========================
+export function CashFlowChart({
+  expenses,
+  viewMode = "transaction",
+  filter = "all",
+  height = 250,
+}) {
   const data = useMemo(() => {
     const map = new Map();
     expenses.forEach((e) => {
@@ -107,21 +136,69 @@ export function CashFlowChart({ expenses, viewMode = "transaction" }) {
       else map.get(date).expense += Math.abs(val);
     });
 
-    return Array.from(map.values()).sort((a, b) => new Date(a.date) - new Date(b.date));
+    return Array.from(map.values()).sort(
+      (a, b) => new Date(a.date) - new Date(b.date)
+    );
   }, [expenses, viewMode]);
 
   if (!data.length) return <p className="text-center text-gray-400">No data</p>;
 
   return (
-    <ResponsiveContainer width="100%" height={250}>
+    <ResponsiveContainer width="100%" height={height}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
-        <Line type="monotone" dataKey="income" stroke="green" />
-        <Line type="monotone" dataKey="expense" stroke="red" />
+        {filter === "all" && (
+          <>
+            <Line type="monotone" dataKey="income" stroke="green" />
+            <Line type="monotone" dataKey="expense" stroke="red" />
+          </>
+        )}
+        {filter === "income" && (
+          <Line type="monotone" dataKey="income" stroke="green" />
+        )}
+        {filter === "expense" && (
+          <Line type="monotone" dataKey="expense" stroke="red" />
+        )}
       </LineChart>
     </ResponsiveContainer>
   );
 }
+
+// =========================
+// Bar Chart: Budget vs Spent
+// =========================
+export function BudgetVsSpentChart({ budgets, height = 250 }) {
+  const data = useMemo(
+    () =>
+      budgets.map((b) => ({
+        category: capitalize(b.category),
+        spent: b.spent,
+        limit: b.limit,
+        over: b.spent > b.limit,
+      })),
+    [budgets]
+  );
+
+  if (!budgets.length)
+    return <p className="text-center text-gray-400">No budgets</p>;
+
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <BarChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="category" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="limit" fill="#7c3aed" name="Budget Limit" />
+        <Bar dataKey="spent" fill="#82ca9d" name="Spent" />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}
+
+// ✅ Alias so BudgetsPage.js still works with BudgetChart
+export { BudgetVsSpentChart as BudgetChart };

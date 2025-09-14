@@ -1,22 +1,22 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import ExpenseTrackerForm from "./ExpenseTrackerForm";
+import { incomeCategories, expenseCategories } from "../constants/categories";
 
-function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }) {
-  const [filter, setFilter] = useState("all");
+function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense, isIncomePage = false }) {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState("date");
   const [sortOrder, setSortOrder] = useState("desc");
   const [currentPage, setCurrentPage] = useState(1);
+  const [editing, setEditing] = useState(null);
   const itemsPerPage = 6;
 
-  const categories = useMemo(() => {
-    const s = new Set((expenses || []).map((e) => e.category || "Other"));
-    return ["all", ...Array.from(s)];
-  }, [expenses]);
+  // ✅ Always include both sets for icon rendering
+  const allCategories = [...incomeCategories, ...expenseCategories];
 
   const formatDate = (d) =>
     d
@@ -29,16 +29,14 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }
 
   // === Filtering ===
   let filtered = (expenses || []).filter((e) => {
-    const matchesFilter =
-      filter === "all" ||
-      (filter === "income" && e.type === "income") ||
-      (filter === "expense" && e.type === "expense");
     const matchesCategory =
       categoryFilter === "all" || (e.category || "Other") === categoryFilter;
+
     const matchesSearch = (e.text || "")
       .toLowerCase()
       .includes(search.toLowerCase());
-    return matchesFilter && matchesCategory && matchesSearch;
+
+    return matchesCategory && matchesSearch;
   });
 
   // === Sorting ===
@@ -56,37 +54,16 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }
     currentPage * itemsPerPage
   );
 
-  // === Export helpers (CSV, XLSX, PDF) ===
-  const exportCSV = () => {
-    if (!filtered.length) return;
-    const csv = [
-      ["Date", "Description", "Category", "Amount", "Type"],
-      ...filtered.map((e) => [
-        formatDate(e.createdAt),
-        e.text,
-        e.category || "Other",
-        e.amount,
-        e.type,
-      ]),
-    ];
-    const csvText = csv
-      .map((r) =>
-        r.map(String).map((v) => `"${v.replace(/"/g, '""')}"`).join(",")
-      )
-      .join("\n");
-    saveAs(new Blob([csvText], { type: "text/csv" }), "transactions.csv");
-  };
-
+  // === Export helpers ===
   const exportXLSX = () => {
     if (!filtered.length) return;
     const ws = XLSX.utils.aoa_to_sheet([
-      ["Date", "Description", "Category", "Amount", "Type"],
+      ["Date", "Description", "Category", "Amount"],
       ...filtered.map((e) => [
         formatDate(e.createdAt),
         e.text,
         e.category || "Other",
         e.amount,
-        e.type,
       ]),
     ]);
     const wb = XLSX.utils.book_new();
@@ -103,13 +80,12 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }
     const doc = new jsPDF();
     doc.text("Personal-Budget-Tracker", 14, 16);
     doc.autoTable({
-      head: [["Date", "Description", "Category", "Amount", "Type"]],
+      head: [["Date", "Description", "Category", "Amount"]],
       body: filtered.map((e) => [
         formatDate(e.createdAt),
         e.text,
         e.category || "Other",
         e.amount,
-        e.type,
       ]),
       startY: 24,
     });
@@ -133,18 +109,7 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }
               setCurrentPage(1);
             }}
           />
-          <select
-            className="select"
-            value={filter}
-            onChange={(e) => {
-              setFilter(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            <option value="all">All</option>
-            <option value="income">Income</option>
-            <option value="expense">Expenses</option>
-          </select>
+          {/* ✅ Category dropdown with optgroup */}
           <select
             className="select"
             value={categoryFilter}
@@ -153,16 +118,23 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }
               setCurrentPage(1);
             }}
           >
-            {categories.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
+            <option value="all">All Categories</option>
+            <optgroup label="💰 Income Categories">
+              {incomeCategories.map((c) => (
+                <option key={c.label} value={c.label}>
+                  {c.icon} {c.label}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="💸 Expense Categories">
+              {expenseCategories.map((c) => (
+                <option key={c.label} value={c.label}>
+                  {c.icon} {c.label}
+                </option>
+              ))}
+            </optgroup>
           </select>
           <div className="export-group">
-            <button className="btn btn-ghost" onClick={exportCSV}>
-              CSV
-            </button>
             <button className="btn btn-ghost" onClick={exportXLSX}>
               XLSX
             </button>
@@ -188,11 +160,16 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }
           <tbody>
             {paginated.map((e) => {
               const isIncome = e.type === "income";
+              const cat = allCategories.find(
+                (c) => c.label.toLowerCase() === (e.category || "").toLowerCase()
+              );
               return (
                 <tr key={e._id || e.text}>
                   <td>{formatDate(e.createdAt)}</td>
                   <td>{e.text}</td>
-                  <td className="small muted">{e.category || "Other"}</td>
+                  <td className="small muted">
+                    {cat ? `${cat.icon} ${cat.label}` : e.category || "Other"}
+                  </td>
                   <td
                     style={{ textAlign: "right" }}
                     className={isIncome ? "amount-pos" : "amount-neg"}
@@ -203,12 +180,7 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }
                   </td>
                   <td>
                     <div className="row-actions">
-                      <button
-                        className="edit-btn"
-                        onClick={() =>
-                          handleEditExpense && handleEditExpense(e._id, e)
-                        }
-                      >
+                      <button className="edit-btn" onClick={() => setEditing(e)}>
                         Edit
                       </button>
                       <button
@@ -262,10 +234,57 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense }
         </div>
       )}
 
+      {/* === Edit Modal === */}
+      {editing && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h3>Edit Transaction</h3>
+            <ExpenseTrackerForm
+              initialData={editing}
+              isIncome={editing.type === "income"}
+              addExpenses={async (d) => {
+                await handleEditExpense(editing._id, d);
+                setEditing(null);
+              }}
+            />
+            <div className="button-row">
+              <button
+                className="btn btn-secondary"
+                onClick={() => setEditing(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style>
         {`
           .amount-pos { color: green; font-weight: bold; }
           .amount-neg { color: red; font-weight: bold; }
+          .modal-backdrop {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+          }
+          .modal {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 400px;
+            max-width: 500px;
+          }
+          .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            justify-content: flex-end;
+          }
         `}
       </style>
     </div>

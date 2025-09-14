@@ -22,10 +22,13 @@ exports.addExpenses = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    // ✅ normalize category to lowercase
+    const normalizedCategory = category ? category.trim().toLowerCase() : "other";
+
     const newExpense = new Expense({
       text: text.trim(),
       amount,
-      category: category ? category.trim() : "Other", // ✅ normalize
+      category: normalizedCategory,
       type,
       userId: req.user._id,
     });
@@ -44,12 +47,15 @@ exports.editExpense = async (req, res) => {
     const { expenseId } = req.params;
     let { text, amount, category, type } = req.body;
 
+    // ✅ normalize category to lowercase
+    const normalizedCategory = category ? category.trim().toLowerCase() : "other";
+
     const updated = await Expense.findOneAndUpdate(
       { _id: expenseId, userId: req.user._id },
       {
         text: text ? text.trim() : "",
         amount,
-        category: category ? category.trim() : "Other",
+        category: normalizedCategory,
         type,
       },
       { new: true }

@@ -13,11 +13,14 @@ export default function ProfileSettings({ user }) {
     localStorage.getItem("userAvatar") || user?.avatar || null
   );
 
-  // ✅ helper to save user consistently
+  // ✅ Save user + notify Sidebar
   const saveUserToLocalStorage = (userData) => {
     if (!userData) return;
     if (userData.name) localStorage.setItem("loggedInUser", userData.name);
     if (userData.avatar) localStorage.setItem("userAvatar", userData.avatar);
+
+    // 🔄 notify Sidebar instantly
+    window.dispatchEvent(new Event("profileUpdated"));
   };
 
   // Avatar preview

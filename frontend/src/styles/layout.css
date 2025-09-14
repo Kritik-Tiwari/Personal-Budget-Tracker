@@ -154,3 +154,41 @@ body { background: var(--bg); }
   min-width: 120px;
 }
 
+/* --- GROUPS LAYOUT --- */
+
+/* Larger responsive grid for groups */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* Group card */
+.group-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-top: 4px solid var(--accent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.group-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Group header with actions */
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.group-header h3 {
+  margin: 0;
+}
+
+/* Members list inside group */
+.group-members {
+  margin-top: 10px;
+}

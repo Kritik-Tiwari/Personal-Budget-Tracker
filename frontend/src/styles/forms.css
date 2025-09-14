@@ -163,3 +163,90 @@
 .link:hover {
   text-decoration: underline;
 }
+
+/* --- GROUPS PAGE --- */
+
+/* Grid layout for groups */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Distinct card style for groups */
+.group-card {
+  border-top: 4px solid var(--accent);
+  transition: all 0.2s ease;
+}
+.group-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Header with group name + actions */
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- BUTTONS --- */
+
+/* Group-level actions (edit/delete) */
+.btn-group-action {
+  padding: 6px 12px;
+  font-size: 13px;
+  margin-left: 6px;
+}
+.btn-edit-group {
+  background: #facc15; /* amber */
+  color: #000;
+}
+.btn-edit-group:hover {
+  background: #eab308;
+}
+.btn-delete-group {
+  background: #ef4444; /* red */
+  color: white;
+}
+.btn-delete-group:hover {
+  background: #dc2626;
+}
+
+/* Member-level actions (smaller inline buttons) */
+.member-actions {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 8px;
+}
+.btn-member {
+  padding: 3px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+.btn-edit-member {
+  background: #3b82f6; /* blue */
+  color: white;
+}
+.btn-edit-member:hover {
+  background: #2563eb;
+}
+.btn-delete-member {
+  background: #ef4444; /* red */
+  color: white;
+}
+.btn-delete-member:hover {
+  background: #dc2626;
+}
+
+/* --- MEMBERS LIST --- */
+.member-tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}

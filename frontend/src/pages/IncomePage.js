@@ -63,6 +63,7 @@ export default function IncomePage() {
             expenses={items}
             handleDeleteExpense={handleDeleteExpense}
             handleEditExpense={handleEditExpense}
+            isIncomePage={true} 
           />
         </div>
         <div className="card wide-card">
