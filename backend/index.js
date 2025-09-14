@@ -14,24 +14,29 @@ const ensureAuthenticated = require("./Middlewares/Auth");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Middlewares
+// ✅ CORS configuration
 app.use(cors({
   origin: [
-    "http://localhost:3000",             // ✅ local development
-    "https://your-frontend.vercel.app"   // ✅ replace with actual Vercel frontend URL
+    "http://localhost:3000",                             // local development
+    "https://personal-budget-tracker-cdanna7g7j.vercel.app" // your actual Vercel frontend URL
   ],
   credentials: true
 }));
 
+// ✅ Middleware to parse JSON
 app.use(express.json());
 
 // ✅ Serve uploaded files (avatars, etc.)
 app.use("/uploads", express.static("uploads"));
 
-// Health check route
+// ✅ Health check route
+app.get("/", (req, res) => {
+  res.send("✅ Personal Budget Tracker Backend is running!");
+});
+
 app.get("/ping", (req, res) => res.send("PONG"));
 
-// Routes
+// ✅ Routes
 app.use("/auth", AuthRouter);
 app.use("/products", ProductRouter);
 app.use("/expenses", ensureAuthenticated, ExpenseRouter);
@@ -39,7 +44,7 @@ app.use("/budgets", ensureAuthenticated, BudgetRouter);
 app.use("/groups", ensureAuthenticated, GroupRouter);
 app.use("/user", ensureAuthenticated, UserRouter);
 
-// Start server
+// ✅ Start server
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
 });
