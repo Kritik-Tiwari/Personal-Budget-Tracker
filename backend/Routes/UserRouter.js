@@ -8,7 +8,7 @@ const {
   updateEmail,
   updatePassword,
   updateAvatar,
-} = require("../Controllers/usercontroller");
+} = require("../Controllers/UserController");
 
 
 // ✅ Configure multer for avatar uploads
