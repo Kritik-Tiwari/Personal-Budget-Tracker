@@ -77,7 +77,7 @@ router.delete("/:groupId", ensureAuthenticated, async (req, res) => {
 });
 
 // ===============================
-// ✅ Add member
+//  Add member
 // ===============================
 router.post("/:groupId/members", ensureAuthenticated, async (req, res) => {
   try {
@@ -99,7 +99,7 @@ router.post("/:groupId/members", ensureAuthenticated, async (req, res) => {
 });
 
 // ===============================
-// ✅ Edit member
+//  Edit member
 // ===============================
 router.put("/:groupId/members/:memberId", ensureAuthenticated, async (req, res) => {
   try {
@@ -126,7 +126,7 @@ router.put("/:groupId/members/:memberId", ensureAuthenticated, async (req, res) 
 });
 
 // ===============================
-// ✅ Delete member
+// Delete member
 // ===============================
 router.delete("/:groupId/members/:memberId", ensureAuthenticated, async (req, res) => {
   try {

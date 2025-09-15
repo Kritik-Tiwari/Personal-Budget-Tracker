@@ -26,11 +26,11 @@ export default function Login() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Login failed");
 
-      // ✅ Save tokens
+      // Save tokens
       localStorage.setItem("token", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
 
-      // ✅ Save name instead of email
+      // Save name instead of email
       localStorage.setItem("loggedInUser", data.user?.name || form.email);
 
       handleSuccess("Login successful ✅");

@@ -10,7 +10,7 @@ export default function BudgetsPage() {
   const [editingCategory, setEditingCategory] = useState(null);
   const [editLimit, setEditLimit] = useState("");
 
-  // ✅ Capitalize first letter
+  // Capitalize first letter
   const capitalize = (str) =>
     str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : "";
 
@@ -36,7 +36,7 @@ export default function BudgetsPage() {
     fetchBudgets();
   }, []);
 
-  // ✅ Add budget
+  // Add budget
   const addBudget = async () => {
     if (!newCategory.trim() || !newLimit) return;
     try {
@@ -60,7 +60,7 @@ export default function BudgetsPage() {
     }
   };
 
-  // ✅ Edit budget
+  // Edit budget
   const saveEdit = async (category) => {
     if (!editLimit) return;
     try {
@@ -84,7 +84,7 @@ export default function BudgetsPage() {
     }
   };
 
-  // ✅ Delete budget
+  // Delete budget
   const deleteBudget = async (category) => {
     if (!window.confirm(`Delete budget for ${capitalize(category)}?`)) return;
     try {
@@ -134,7 +134,7 @@ export default function BudgetsPage() {
         </button>
       </div>
 
-      {/* ✅ Chart Section */}
+      {/* Chart Section */}
       {budgets.length > 0 && (
         <div className="card mt-6">
           <h3>Budget vs Spent Overview</h3>

@@ -1,4 +1,4 @@
-// ✅ Income categories (with icons)
+// Income categories (with icons)
 export const incomeCategories = [
   { label: "Salary", icon: "💼" },
   { label: "Business", icon: "🏢" },
@@ -12,7 +12,7 @@ export const incomeCategories = [
   { label: "Other", icon: "🔖" },
 ];
 
-// ✅ Expense categories (with icons)
+// Expense categories (with icons)
 export const expenseCategories = [
   { label: "Food and Dining", icon: "🍽️" },
   { label: "Transport", icon: "🚌" },

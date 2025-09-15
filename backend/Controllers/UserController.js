@@ -11,7 +11,7 @@ const formatUser = (req, user) => {
   };
 };
 
-// ✅ Get logged-in user profile
+// Get logged-in user profile
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password -refreshToken");
@@ -23,7 +23,7 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-// ✅ Update name
+// Update name
 exports.updateName = async (req, res) => {
   try {
     const { name } = req.body;
@@ -41,7 +41,7 @@ exports.updateName = async (req, res) => {
   }
 };
 
-// ✅ Update email
+// Update email
 exports.updateEmail = async (req, res) => {
   try {
     const { email } = req.body;
@@ -59,7 +59,7 @@ exports.updateEmail = async (req, res) => {
   }
 };
 
-// ✅ Update password
+// Update password
 exports.updatePassword = async (req, res) => {
   try {
     const { password } = req.body;
@@ -76,7 +76,7 @@ exports.updatePassword = async (req, res) => {
   }
 };
 
-// ✅ Update avatar
+// Update avatar
 exports.updateAvatar = async (req, res) => {
   try {
     if (!req.file)

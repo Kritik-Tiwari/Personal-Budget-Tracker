@@ -15,7 +15,7 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense, 
   const [editing, setEditing] = useState(null);
   const itemsPerPage = 6;
 
-  // ✅ Always include both sets for icon rendering
+  // Always include both sets for icon rendering
   const allCategories = [...incomeCategories, ...expenseCategories];
 
   const formatDate = (d) =>
@@ -109,7 +109,7 @@ function ExpensesTable({ expenses = [], handleDeleteExpense, handleEditExpense, 
               setCurrentPage(1);
             }}
           />
-          {/* ✅ Category dropdown with optgroup */}
+          {/* Category dropdown with optgroup */}
           <select
             className="select"
             value={categoryFilter}

@@ -5,7 +5,7 @@ import { fetchWithAuth, APIUrl, handleError, handleSuccess } from "../utils";
 
 export default function GroupsPage() {
   const [groups, setGroups] = useState([]);
-  const [balances, setBalances] = useState({}); // ✅ store balances per group
+  const [balances, setBalances] = useState({}); //store balances per group
   const [newGroup, setNewGroup] = useState("");
   const [memberInputs, setMemberInputs] = useState({});
   const [expenseInputs, setExpenseInputs] = useState({});
@@ -13,7 +13,7 @@ export default function GroupsPage() {
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
 
-  // ✅ Fetch groups
+  //Fetch groups
   const fetchGroups = async () => {
     try {
       const res = await fetchWithAuth(`${APIUrl}/groups`);
@@ -44,7 +44,7 @@ export default function GroupsPage() {
     fetchGroups();
   }, []);
 
-  // ✅ Create group
+  // Create group
   const createGroup = async () => {
     if (!newGroup.trim()) return;
     try {
@@ -65,7 +65,7 @@ export default function GroupsPage() {
     }
   };
 
-  // ✅ Edit group
+  // Edit group
   const saveEdit = async (id) => {
     try {
       const res = await fetchWithAuth(`${APIUrl}/groups/${id}`, {
@@ -85,7 +85,7 @@ export default function GroupsPage() {
     }
   };
 
-  // ✅ Delete group
+  // Delete group
   const deleteGroup = async (id) => {
     if (!window.confirm("Delete this group?")) return;
     try {
@@ -102,7 +102,7 @@ export default function GroupsPage() {
     }
   };
 
-  // ✅ Add member
+  // Add member
   const addMember = async (groupId) => {
     const name = (memberInputs[groupId] || "").trim();
     if (!name) return;
@@ -124,7 +124,7 @@ export default function GroupsPage() {
     }
   };
 
-  // ✅ Delete member
+  // Delete member
   const deleteMember = async (groupId, memberId) => {
     if (!window.confirm("Remove this member?")) return;
     try {
@@ -142,7 +142,7 @@ export default function GroupsPage() {
     }
   };
 
-  // ✅ Add expense
+  // Add expense
   const addExpense = async (groupId) => {
     const { amount, paidBy } = expenseInputs[groupId] || {};
     if (!paidBy || !amount) return;

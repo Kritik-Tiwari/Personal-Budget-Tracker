@@ -5,13 +5,13 @@ const UserModel = require("../Models/User");
 // Generate JWT and Refresh Token
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
-    { email: user.email, _id: user._id, name: user.name }, // ✅ include _id
+    { email: user.email, _id: user._id, name: user.name }, //include _id
     process.env.JWT_SECRET,
     { expiresIn: "15m" } // short-lived access token
   );
 
   const refreshToken = jwt.sign(
-    { email: user.email, _id: user._id, name: user.name }, // ✅ include _id
+    { email: user.email, _id: user._id, name: user.name }, //include _id
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: "7d" }
   );
@@ -46,7 +46,7 @@ const signup = async (req, res) => {
       success: true,
       accessToken,
       refreshToken,
-      user: { _id: user._id, name: user.name, email: user.email }, // ✅ fixed
+      user: { _id: user._id, name: user.name, email: user.email }, 
     });
   } catch (err) {
     console.error("Signup Error:", err);
@@ -83,7 +83,7 @@ const login = async (req, res) => {
       success: true,
       accessToken,
       refreshToken,
-      user: { _id: user._id, name: user.name, email: user.email }, // ✅ fixed
+      user: { _id: user._id, name: user.name, email: user.email }, 
     });
   } catch (err) {
     console.error("Login Error:", err);
@@ -124,7 +124,7 @@ const refresh = async (req, res) => {
         success: true,
         accessToken,
         refreshToken: newRefreshToken,
-        user: { _id: user._id, name: user.name, email: user.email }, // ✅ fixed
+        user: { _id: user._id, name: user.name, email: user.email }, 
       });
     });
   } catch (err) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { incomeCategories, expenseCategories } from "../constants/categories";
 import { handleError } from "../utils";
 
-// ✅ Capitalize helper
+// Capitalize helper
 const capitalize = (str) =>
   str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 
@@ -19,7 +19,7 @@ export default function ExpenseTrackerForm({
 
   const categories = isIncome ? incomeCategories : expenseCategories;
 
-  // ✅ When editing, pre-fill form with normalized lowercase category
+  // When editing, pre-fill form with normalized lowercase category
   useEffect(() => {
     if (initialData) {
       setForm({
@@ -34,7 +34,7 @@ export default function ExpenseTrackerForm({
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: name === "category" ? value.toLowerCase() : value, // ✅ force lowercase internally
+      [name]: name === "category" ? value.toLowerCase() : value, // force lowercase internally
     });
   };
 
@@ -46,11 +46,11 @@ export default function ExpenseTrackerForm({
 
     await addExpenses({
       ...form,
-      category: form.category.toLowerCase(), // ✅ stored lowercase
+      category: form.category.toLowerCase(), // stored lowercase
       text: form.text.trim(),
     });
 
-    // ✅ Only reset if adding a new record
+    // Only reset if adding a new record
     if (!initialData) {
       setForm({
         text: "",

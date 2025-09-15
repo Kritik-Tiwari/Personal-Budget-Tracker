@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [expenseAmt, setExpenseAmt] = useState(0);
   const [incomeAmt, setIncomeAmt] = useState(0);
 
-  // 🔘 Separate filters
+  // Separate filters
   const [pieFilter, setPieFilter] = useState("all");
   const [flowFilter, setFlowFilter] = useState("all");
 
@@ -74,13 +74,13 @@ export default function Dashboard() {
     }
   };
 
-  // ✅ Memoized filter for Pie chart
+  // Memoized filter for Pie chart
   const filteredExpenses = useMemo(() => {
     if (pieFilter === "all") return expenses;
     return expenses.filter((e) => e.type === pieFilter);
   }, [expenses, pieFilter]);
 
-  // 🔘 Tab button
+  // Tab button
   const TabButton = ({ value, label, icon, active, onClick }) => (
     <button
       className={`tab-btn ${active === value ? "active" : ""}`}
@@ -136,7 +136,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ✅ Styles */}
+      {/* Styles */}
       <style>
         {`
           .tab-toggle {

@@ -8,14 +8,14 @@ export default function Sidebar() {
   const [name, setName] = useState(localStorage.getItem("loggedInUser") || "User");
 
   useEffect(() => {
-    // ✅ Update state when localStorage changes (anywhere)
+    // Update state when localStorage changes (anywhere)
     const handleStorageChange = () => {
       setAvatar(localStorage.getItem("userAvatar"));
       setName(localStorage.getItem("loggedInUser") || "User");
     };
 
     window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("profileUpdated", handleStorageChange); // 🔄 listen to custom event
+    window.addEventListener("profileUpdated", handleStorageChange); // listen to custom event
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);

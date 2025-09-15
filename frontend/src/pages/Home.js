@@ -16,7 +16,7 @@ function Home() {
 
   const navigate = useNavigate();
 
-  // ✅ useCallback to stabilize fetchExpenses
+  // useCallback to stabilize fetchExpenses
   const fetchExpenses = useCallback(async () => {
     try {
       const res = await fetchWithAuth(`${APIUrl}/expenses`, { method: "GET" });
@@ -31,7 +31,7 @@ function Home() {
     }
   }, [navigate]);
 
-  // ✅ include fetchExpenses in dependency array
+  // include fetchExpenses in dependency array
   useEffect(() => {
     setLoggedInUser(localStorage.getItem("loggedInUser"));
     setDark(localStorage.getItem("theme") === "dark");

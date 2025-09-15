@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 8080;
 app.use(cors({
   origin: [
     "http://localhost:3000",                             // local development
-    "https://personal-budget-tracker-cdanna7g7j.vercel.app" // your actual Vercel frontend URL
+    "https://personal-budget-tracker-cdanna7g7j.vercel.app" //Vercel frontend URL
   ],
   credentials: true
 }));

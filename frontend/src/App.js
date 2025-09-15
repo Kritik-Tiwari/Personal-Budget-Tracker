@@ -34,7 +34,7 @@ function App() {
         </Route>
       </Routes>
 
-      {/* ✅ Toast container for popups */}
+      {/* Toast container for popups */}
       <ToastContainer position="top-right" autoClose={3000} />
     </>
   );

@@ -16,7 +16,7 @@ const GroupExpenseSchema = new Schema({
 
 const GroupSchema = new Schema({
   name: { type: String, required: true },
-  members: [{ name: String }], // ✅ simplified members with just names
+  members: [{ name: String }], // simplified members with just names
   expenses: [GroupExpenseSchema],
 });
 

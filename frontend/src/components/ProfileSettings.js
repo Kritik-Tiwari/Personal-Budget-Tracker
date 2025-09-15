@@ -13,7 +13,7 @@ export default function ProfileSettings({ user }) {
     localStorage.getItem("userAvatar") || user?.avatar || null
   );
 
-  // ✅ Save user + notify Sidebar
+  // Save user + notify Sidebar
   const saveUserToLocalStorage = (userData) => {
     if (!userData) return;
     if (userData.name) localStorage.setItem("loggedInUser", userData.name);
@@ -32,7 +32,7 @@ export default function ProfileSettings({ user }) {
     }
   };
 
-  // ✅ Update Avatar
+  // Update Avatar
   const updateAvatar = async () => {
     try {
       if (!avatar) return handleError("Please select an image first");
@@ -61,7 +61,7 @@ export default function ProfileSettings({ user }) {
     }
   };
 
-  // ✅ Update Name
+  // Update Name
   const updateNameHandler = async () => {
     try {
       const res = await fetch(`${APIUrl}/user/name`, {
@@ -82,7 +82,7 @@ export default function ProfileSettings({ user }) {
     }
   };
 
-  // ✅ Update Email
+  // Update Email
   const updateEmailHandler = async () => {
     try {
       const res = await fetch(`${APIUrl}/user/email`, {
@@ -103,7 +103,7 @@ export default function ProfileSettings({ user }) {
     }
   };
 
-  // ✅ Update Password
+  // Update Password
   const updatePasswordHandler = async () => {
     try {
       const res = await fetch(`${APIUrl}/user/password`, {

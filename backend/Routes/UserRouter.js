@@ -11,7 +11,7 @@ const {
 } = require("../Controllers/UserController");
 
 
-// ✅ Configure multer for avatar uploads
+// Configure multer for avatar uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/avatars");

@@ -59,7 +59,7 @@ export default function GroupDetailsPage() {
         body: JSON.stringify({
           text,
           amount: Number(amount),
-          paidBy: group.members[0]._id, // ⚠️ you may change this to loggedInUser
+          paidBy: group.members[0]._id, // you may change this to loggedInUser
           split: group.members.map((m) => ({
             member: m._id,
             share: Number(amount) / group.members.length,
@@ -76,7 +76,7 @@ export default function GroupDetailsPage() {
     }
   };
 
-  // ✅ Settlement
+  // Settlement
   const settleUp = async () => {
     if (!settleFrom || !settleTo || !settleAmount)
       return alert("Fill all settlement fields");
@@ -102,7 +102,7 @@ export default function GroupDetailsPage() {
     }
   };
 
-  // ✅ Edit group name
+  // Edit group name
   const saveGroupName = async () => {
     try {
       const res = await fetchWithAuth(`${APIUrl}/groups/${groupId}`, {
@@ -121,7 +121,7 @@ export default function GroupDetailsPage() {
     }
   };
 
-  // ✅ Delete group
+  // Delete group
   const deleteGroup = async () => {
     if (!window.confirm("Delete this group?")) return;
     try {

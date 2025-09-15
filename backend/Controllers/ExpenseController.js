@@ -1,6 +1,6 @@
 const Expense = require("../Models/Expense");
 
-// ✅ Get all expenses (for logged in user)
+// Get all expenses (for logged in user)
 exports.fetchExpenses = async (req, res) => {
   try {
     const expenses = await Expense.find({ userId: req.user._id }).sort({
@@ -13,7 +13,7 @@ exports.fetchExpenses = async (req, res) => {
   }
 };
 
-// ✅ Add new expense/income
+// Add new expense/income
 exports.addExpenses = async (req, res) => {
   try {
     let { text, amount, category, type } = req.body;
@@ -22,7 +22,7 @@ exports.addExpenses = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // ✅ normalize category to lowercase
+    //normalize category to lowercase
     const normalizedCategory = category ? category.trim().toLowerCase() : "other";
 
     const newExpense = new Expense({
@@ -41,13 +41,13 @@ exports.addExpenses = async (req, res) => {
   }
 };
 
-// ✅ Edit an expense/income
+// Edit an expense/income
 exports.editExpense = async (req, res) => {
   try {
     const { expenseId } = req.params;
     let { text, amount, category, type } = req.body;
 
-    // ✅ normalize category to lowercase
+    //normalize category to lowercase
     const normalizedCategory = category ? category.trim().toLowerCase() : "other";
 
     const updated = await Expense.findOneAndUpdate(
@@ -72,7 +72,7 @@ exports.editExpense = async (req, res) => {
   }
 };
 
-// ✅ Delete an expense/income
+// Delete an expense/income
 exports.deleteExpenses = async (req, res) => {
   try {
     const { expenseId } = req.params;

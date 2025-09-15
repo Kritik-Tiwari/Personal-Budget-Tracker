@@ -200,5 +200,5 @@ export function BudgetVsSpentChart({ budgets, height = 250 }) {
   );
 }
 
-// ✅ Alias so BudgetsPage.js still works with BudgetChart
+// Alias so BudgetsPage.js still works with BudgetChart
 export { BudgetVsSpentChart as BudgetChart };

@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { signup, login, refresh } = require("../Controllers/AuthController");
 const { signupValidation, loginValidation } = require("../Middlewares/AuthValidation");
-const ensureAuthenticated = require("../Middlewares/Auth"); // 👈 import
+const ensureAuthenticated = require("../Middlewares/Auth"); 
 const User = require("../Models/User");
 const multer = require("multer");
 const path = require("path");
@@ -60,7 +60,7 @@ router.put("/user/avatar", ensureAuthenticated, upload.single("avatar"), async (
       return res.status(400).json({ message: "No avatar uploaded" });
     }
 
-    // ✅ Build full URL
+    // Build full URL
     const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 8080}`;
     const avatarUrl = `${baseUrl}/uploads/avatars/${req.file.filename}`;
 

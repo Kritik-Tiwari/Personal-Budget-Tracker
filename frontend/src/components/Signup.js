@@ -17,7 +17,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Client-side password validation
+    // Client-side password validation
     if (form.password.length < 8) {
       return handleError("Password must be at least 8 characters long");
     }
@@ -33,7 +33,7 @@ export default function Signup() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Signup failed");
 
-      // ✅ Save tokens & user info immediately (auto login)
+      // Save tokens & user info immediately (auto login)
       localStorage.setItem("token", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
       localStorage.setItem("loggedInUser", data.user?.name || form.email);
