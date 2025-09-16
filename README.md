@@ -153,12 +153,6 @@ npm start
 - POST `/groups/:id/settle` → Settle balances  
 - GET `/groups/:id/balances` → View balances  
 
-🗂️ ER Diagram  
-
-![ER Diagram](https://github.com/Kritik-Tiwari/Personal-Budget-Tracker/blob/main/er_diagram_budget_tracker.png?raw=true)
-
-![Use Case Diagram](https://github.com/Kritik-Tiwari/Personal-Budget-Tracker/blob/main/use_case_budget_tracker.png?raw=true)
-
 
 📄 Software Requirements Specification (SRS)
  
@@ -193,11 +187,7 @@ npm start
  - Usability  
  - Reliability  
 
-5. Use Case Diagram  
-
-![Use Case Diagram](use_case_budget_tracker.png)
-
-6. Future Enhancements
+5. Future Enhancements
  - AI-powered spending insights  
  - Multi-currency and localization support  
  - Dark mode UI  
