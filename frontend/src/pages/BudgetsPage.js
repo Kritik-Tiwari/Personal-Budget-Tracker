@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchWithAuth, APIUrl, handleError, handleSuccess } from "../utils";
-import { BudgetChart } from "../components/Charts"; // ✅ import chart
+import { BudgetChart } from "../components/Charts"; // import chart
 import "../styles/forms.css";
 
 export default function BudgetsPage() {
@@ -14,7 +14,7 @@ export default function BudgetsPage() {
   const capitalize = (str) =>
     str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : "";
 
-  // ✅ Fetch budgets from backend
+  // Fetch budgets from backend
   const fetchBudgets = async () => {
     try {
       const res = await fetchWithAuth(`${APIUrl}/budgets`);
