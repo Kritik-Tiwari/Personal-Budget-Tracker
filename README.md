@@ -90,7 +90,7 @@ personal-budget-tracker
 │   └── package.json
 
 
-⚙️ Setup & Installation
+⚙️ Setup & Installation:-
 
 1. Clone the repository
 git clone https://github.com/<Kritik-Tiwari>/personal-budget-tracker.git
@@ -116,7 +116,7 @@ cd frontend
 npm install
 npm start
 
-🌍 Deployment
+🌍 Deployment:-
 
  Backend (Render/Heroku)
 - Push backend to GitHub  
@@ -128,7 +128,7 @@ npm start
 - Deploy with Vercel or Netlify  
 - Update `APIUrl` in `frontend/src/utils.js` to your deployed backend URL  
 
-🧪 API Endpoints
+🧪 API Endpoints:-
 
  Auth   
 - POST `/auth/login` → Login  
@@ -154,7 +154,7 @@ npm start
 - GET `/groups/:id/balances` → View balances  
 
 
-📄 Software Requirements Specification (SRS)
+📄 Software Requirements Specification (SRS):-
  
 1. Introduction
  - Purpose: The Personal Budget Tracker helps users track income, expenses, budgets, and group expenses.  
@@ -192,7 +192,7 @@ npm start
  - Multi-currency and localization support  
  - Dark mode UI  
 
-👤 Demo Credentials
+👤 Demo Credentials:-
 
  Use these credentials after deployment for testing:  
  Email: demo@demo.com  
@@ -200,19 +200,19 @@ npm start
 
  (Or register a new account from the signup page)
 
- 📸 Screenshots
+ 📸 Screenshots:-
 
  👉 Dashboard, Budgets, Groups, and Profile Settings with avatar upload  
  (Add your screenshots here after deployment)
 
- 🎥 Demo Video
+ 🎥 Demo Video:-
 
  [![Watch the demo](https://img.youtube.com/vi/uu5apCBjo2Q/0.jpg)](https://www.youtube.com/watch?v=uu5apCBjo2Q)
 
- 🙌 Contributing
+ 🙌 Contributing:-
 
  Pull requests are welcome! If you’d like to add features (charts, export CSV, etc.), feel free to fork the repo and contribute.
 
- 📜 License
+ 📜 License:-
 
  This project is licensed under the MIT License.
