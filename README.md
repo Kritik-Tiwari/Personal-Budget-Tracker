@@ -155,7 +155,8 @@ npm start
 
 🗂️ ER Diagram  
 
-![ER Diagram](er_diagram_budget_tracker.png)
+![ER Diagram](./er_diagram_budget_tracker.png)
+![Use Case Diagram](./use_case_budget_tracker.png)
 
 📄 Software Requirements Specification (SRS)
  
@@ -171,7 +172,7 @@ npm start
  - Backend: Node.js + Express + MongoDB  
  - Authentication: JWT with access + refresh tokens  
 
-System Functions:  
+ System Functions:  
  - Authentication and profile management  
  - Add/update/delete income and expenses  
  - Set budgets and get alerts  
