@@ -2,7 +2,7 @@
 
 A full-stack personal finance manager built with the MERN stack (MongoDB, Express, React, Node.js). It helps users track income, expenses, budgets, and groups while also supporting authentication with JWT + refresh tokens and profile settings with avatar upload.
 
-🚀 Features
+🚀 Features:-
 
 🔐 Authentication
 - Secure login with JWT access + refresh tokens  
@@ -33,15 +33,15 @@ A full-stack personal finance manager built with the MERN stack (MongoDB, Expres
 - Sidebar navigation  
 - Cards, forms, and charts for easy tracking  
 
-🛠️ Tech Stack
+🛠️ Tech Stack:-
 
-**Frontend**
+ Frontend
 - React (CRA / Vite)
 - React Router  
 - Context API / LocalStorage  
 - CSS (custom + utility classes)  
 
-**Backend**
+ Backend
 - Node.js + Express  
 - MongoDB + Mongoose  
 - JWT Authentication (Access + Refresh)  
@@ -49,7 +49,7 @@ A full-stack personal finance manager built with the MERN stack (MongoDB, Expres
 - Bcrypt (for password hashing)  
 - CORS & dotenv  
 
-📂 Project Structure
+📂 Project Structure:-
 
 personal-budget-tracker
 ├── backend
@@ -88,12 +88,12 @@ personal-budget-tracker
 │   │   ├── utils.js (fetchWithAuth, helpers)
 │   │   └── App.js
 │   └── package.json
-```
+
 
 ⚙️ Setup & Installation
 
 1. Clone the repository
-git clone https://github.com/<your-username>/personal-budget-tracker.git
+git clone https://github.com/<Kritik-Tiwari>/personal-budget-tracker.git
 cd personal-budget-tracker
 
 2. Backend Setup
@@ -157,9 +157,9 @@ npm start
 📄 Software Requirements Specification (SRS)
  
 1. Introduction
- - **Purpose**: The Personal Budget Tracker helps users track income, expenses, budgets, and group expenses.  
- - **Scope**: Web-based MERN stack application with JWT authentication, profile management, budgeting, and group expense sharing.  
- - **Users**: Individual users, group members (friends, family, roommates).  
+ - Purpose: The Personal Budget Tracker helps users track income, expenses, budgets, and group expenses.  
+ - Scope: Web-based MERN stack application with JWT authentication, profile management, budgeting, and group expense sharing.  
+ - Users: Individual users, group members (friends, family, roommates).  
   
 2. Overall Description
   
@@ -204,6 +204,10 @@ npm start
 
  👉 Dashboard, Budgets, Groups, and Profile Settings with avatar upload  
  (Add your screenshots here after deployment)
+
+ 🎥 Demo Video
+
+ [![Watch the demo](https://img.youtube.com/vi/uu5apCBjo2Q/0.jpg)](https://www.youtube.com/watch?v=uu5apCBjo2Q)
 
  🙌 Contributing
 
