@@ -155,8 +155,10 @@ npm start
 
 🗂️ ER Diagram  
 
-![ER Diagram](./er_diagram_budget_tracker.png)
-![Use Case Diagram](./use_case_budget_tracker.png)
+![ER Diagram](https://github.com/Kritik-Tiwari/Personal-Budget-Tracker/blob/main/er_diagram_budget_tracker.png?raw=true)
+
+![Use Case Diagram](https://github.com/Kritik-Tiwari/Personal-Budget-Tracker/blob/main/use_case_budget_tracker.png?raw=true)
+
 
 📄 Software Requirements Specification (SRS)
  
