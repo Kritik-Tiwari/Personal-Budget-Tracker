@@ -200,11 +200,6 @@ npm start
 
  (Or register a new account from the signup page)
 
- 📸 Screenshots:-
-
- 👉 Dashboard, Budgets, Groups, and Profile Settings with avatar upload  
- (Add your screenshots here after deployment)
-
  🎥 Demo Video:-
 
  [![Watch the demo](https://img.youtube.com/vi/uu5apCBjo2Q/0.jpg)](https://www.youtube.com/watch?v=uu5apCBjo2Q)
