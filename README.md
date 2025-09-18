@@ -90,7 +90,7 @@ personal-budget-tracker
 │   └── package.json
 
 
-⚙️ Setup & Installation
+⚙️ Setup & Installation:-
 
 1. Clone the repository
 git clone https://github.com/<Kritik-Tiwari>/personal-budget-tracker.git

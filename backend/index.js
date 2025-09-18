@@ -16,11 +16,8 @@ const PORT = process.env.PORT || 8080;
 
 // CORS configuration
 app.use(cors({
-  origin: [
-    "http://localhost:3000",                             // local development
-    "https://personal-budget-tracker-cdanna7g7j.vercel.app" //Vercel frontend URL
-  ],
-  credentials: true
+  origin: "https://personal-budget-tracker-dun.vercel.app/", // your deployed React app URL
+  credentials: true // allow cookies / auth headers
 }));
 
 // Middleware to parse JSON
