@@ -15,10 +15,22 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // CORS configuration
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://personal-budget-tracker-dun.vercel.app"
+];
+
 app.use(cors({
-  origin: "https://personal-budget-tracker-dun.vercel.app/", // your deployed React app URL
-  credentials: true // allow cookies / auth headers
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
+
 
 // Middleware to parse JSON
 app.use(express.json());
