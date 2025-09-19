@@ -29,7 +29,7 @@ exports.addExpenses = async (req, res) => {
       text: text.trim(),
       amount,
       category: normalizedCategory,
-      type: "expense",
+      type: type.trim().toLowerCase(),
       userId: req.user._id,
     });
 
