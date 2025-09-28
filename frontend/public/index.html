@@ -2,23 +2,40 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- Primary site tag -->
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Theme + description -->
+    <!-- 🔹 Primary site favicon (browser tab) -->
+    <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
+
+    <!-- 🔹 Apple Touch Icon (iPhone/iPad home screen) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
+
+    <!-- 🔹 Android Chrome / PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/android-chrome-512x512.png" />
+
+    <!-- 🔹 Web Manifest (for PWA install and metadata) -->
+    <link rel="manifest" href="%PUBLIC_URL%/site.webmanifest" />
+
+    <!-- 🔹 Theme & Description -->
     <meta name="theme-color" content="#7c3aed" />
-    <meta name="description" content="Personal Budget Tracker — simple, clean expense tracking with charts and exports." />
+    <meta
+      name="description"
+      content="Personal Budget Tracker — simple, clean expense tracking with charts and exports."
+    />
 
-    <!-- Apple icon + manifest -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- 🔹 Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-    <!-- Inter font (used by the UI styles) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-    <title>Personal-Budget-Tracker</title>
+    <!-- 🔹 Title -->
+    <title>Personal Budget Tracker</title>
   </head>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
