@@ -1,8 +1,7 @@
-// src/components/Signup.js
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { APIUrl, handleError, handleSuccess } from "../utils";
-import "../App.css";
+import "../styles/auth.css";
 
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -49,8 +48,16 @@ export default function Signup() {
 
   return (
     <div className="auth-container">
+      {/* Left Section */}
       <div className="auth-left">
-        <h1 className="brand-title">Personal Budget Tracker</h1>
+        <Link to="/" className="brand-header">
+          <img
+            src="/logo.png"
+            alt="Personal Budget Tracker Logo"
+            className="brand-logo"
+          />
+          <h1 className="brand-title">Personal Budget Tracker</h1>
+        </Link>
 
         <div className="auth-box">
           <h2>Create an Account</h2>
@@ -96,7 +103,7 @@ export default function Signup() {
                   required
                 />
                 <span
-                  className="toggle-password"
+                  className="toggle-eye"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? "🙈" : "👁️"}
@@ -118,6 +125,7 @@ export default function Signup() {
         </div>
       </div>
 
+      {/* Right Section */}
       <div className="auth-right">
         <div className="auth-graphic">
           <h3>Manage Your Money</h3>

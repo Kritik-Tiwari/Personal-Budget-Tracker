@@ -192,3 +192,43 @@ body { background: var(--bg); }
 .group-members {
   margin-top: 10px;
 }
+
+/* === Topbar Brand (Logo + Text on the Right) === */
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;              /* space between logo and title */
+  margin-right: 40px;     /* slight inward shift from edge */
+}
+
+.topbar-logo {
+  width: 48px;            /* adjust size as needed */
+  height: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  transition: transform 0.3s ease, opacity 0.4s ease;
+  opacity: 0;
+  animation: fadeInLogo 0.6s ease forwards;
+}
+
+.topbar-logo:hover {
+  transform: scale(1.05);
+}
+
+.topbar-title {
+  font-weight: 700;
+  color: #6f3dd7;
+  letter-spacing: 0.5px;
+  font-size: 18px;
+}
+
+/* Smooth fade-in animation for the logo */
+@keyframes fadeInLogo {
+  from {
+    transform: translateY(-5px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

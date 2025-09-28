@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { APIUrl, handleError, handleSuccess } from "../utils";
@@ -46,7 +45,14 @@ export default function Login() {
     <div className="auth-container">
       {/* Left Section */}
       <div className="auth-left">
-        <h1 className="brand-title">Personal Budget Tracker</h1>
+        <Link to="/" className="brand-header">
+          <img
+            src="/logo.png"
+            alt="Personal Budget Tracker Logo"
+            className="brand-logo"
+          />
+          <h1 className="brand-title">Personal Budget Tracker</h1>
+        </Link>
 
         <div className="auth-box">
           <h2>Welcome Back</h2>

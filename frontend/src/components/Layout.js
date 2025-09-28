@@ -1,4 +1,3 @@
-// src/components/Layout.js
 import React from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
@@ -95,10 +94,15 @@ export default function Layout() {
           {/* Left side -> dynamic page title */}
           <h2 style={{ fontWeight: 600, color: "#0f172a" }}>{currentTitle}</h2>
 
-          {/* Right side -> Always show "PERSONAL BUDGET TRACKER" */}
-          <h2 style={{ fontWeight: 700, color: "#6f3dd7", letterSpacing: "1px" }}>
-            PERSONAL BUDGET TRACKER
-          </h2>
+          {/* Right side -> logo + brand name */}
+          <div className="topbar-brand">
+            <img
+              src="/logo.png"
+              alt="Personal Budget Tracker Logo"
+              className="topbar-logo"
+            />
+            <h2 className="topbar-title">PERSONAL BUDGET TRACKER</h2>
+          </div>
         </div>
 
         <div className="main-inner">
